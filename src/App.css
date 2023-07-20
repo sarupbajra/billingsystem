@@ -1,4 +1,4 @@
-@import url('https://fonts.googleeapis.com/css2?family=Lato&display=swap');
+/* @import url('https://fonts.googleeapis.com/css2?family=Lato&display=swap'); */
 
 *{
   box-sizing: border-box;
@@ -17,31 +17,3 @@
   font-size: 3rem;
 }
 
-.vacantTable {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 20px;
-  border: 1px solid black;
-  border-radius: 4px;
-}
-
-.card {
-  height: 200px;
-  width: 300px;
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border: 1px  #ffff;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 20px;
-}
-
-.card p{
-  padding: 10px;
-  text-align: center;
-}
