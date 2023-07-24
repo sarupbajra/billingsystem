@@ -4,7 +4,7 @@ import React from 'react'
 // import { tableDetailInfo } from "../utils/TableInfo";
 import Card from "../component/Card";
 
-export default function Reports() {
+export default function FoodItems() {
     // const [tableDetail, setTableDetail] = useState([]);
     // useEffect(() => {
     //     console.log("detail", tableDetailInfo);
@@ -21,6 +21,8 @@ export default function Reports() {
     //   })}
     // </div>
     // </div>
-    <Card />
+    <>
+    <div><Card /></div>
+    </>
   );
 }
