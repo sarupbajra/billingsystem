@@ -61,18 +61,6 @@ function BasicExample() {
   ))}
 
         <Cardlist/>
-  
-      {/* <div className='Earning'>
-      <div><Card style={{ width: '18rem', backgroundColor:"#17a2b8"}}>
-      <Card.Body >Total Earning 70000</Card.Body>
-    </Card>
-    </div>
-    <div>
-    <Card style={{ width: '18rem', backgroundColor:"#dc3545"}}>
-      <Card.Body >Total Earning 70000</Card.Body>
-    </Card>
-    </div>
-    </div> */}
    </div>
     
 
