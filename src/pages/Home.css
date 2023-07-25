@@ -8,8 +8,6 @@
 }
 
 .card-container{
-     background-color: #17a2b8!important;
- 
     border-radius: 0.25rem;
     box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
     /* display: flex; */
@@ -19,6 +17,15 @@
     margin-bottom: 20px;
     position: relative;
 }
+.occupied-card-container{
+    background-color: #dc3545!important;
+}
+.unoccupied-card-container{
+    background-color: #17a2b8!important;
+}
+
+
+
 .add-item-btn{
     color: blue;
     background-color: white;
@@ -42,16 +49,6 @@
     background-image: url(../b14.png);
 }
 
-.occupied-card-container{
-    background-color: #dc3545!important;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
-    /* display: flex; */
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    position: relative;
-}
 
 
 .contain-occupied{

@@ -1,5 +1,6 @@
 import './card.css';
 import React, { useState } from 'react';
+import Quantity from './Quantity';
 function Items() {
   const [addedItems, setAddedItems] = useState([]);
 
@@ -53,6 +54,7 @@ function Items() {
               <tr>
                 <th>S.N</th>
                 <th>Item Name</th>
+                <th>Qty</th>
                 <th>Price</th>
               </tr>
             </thead>
@@ -61,6 +63,7 @@ function Items() {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.itemName}</td>
+                  <td><Quantity/></td>
                   <td>{`Rs ${item.price}`}</td>
                   
                 </tr>

@@ -11,29 +11,8 @@ import VaccantIcon from "../assets/Icons/vacant.png";
 
 import './Home.css'
 import Cardlist  from '../component/Cardlist';
-const cardData =[
-  {
-    id: 1,
-    title:'Table no 1',
 
-  },
-  {
-    id: 2,
-    title:'Table no 2',
-
-  },
-  {
-    id: 3,
-    title:'Table no 3',
   
-  },
-  {
-    id: 4,
-    title:'Table no 4',
-
-  },
-
-]
 function BasicExample() {
   const [modalShow, setModalShow] = React.useState(false);
   const [selectedCard, setSelectedCard]= useState();
@@ -45,22 +24,11 @@ function BasicExample() {
   return (
     <>
    <div className='contain'>
-   {cardData.map((card) => (
-    
-    <Card key={card.id} className='card-container' style={{ width: '18rem' }}>
-   
-   <Card.Body>
-      <Card.Title>{card.title}</Card.Title>
-      <div className='vacant-icon'><img alt= "occupy" src={VaccantIcon} width="50" height="50" style={{marginRight:"5px"}}/>
-      <Button className="add-item-btn" onClick={()=>handleShow(card)}>Add Occupy Table</Button>
-      </div>
-    </Card.Body>
-   
-  </Card>
   
-  ))}
 
         <Cardlist/>
+  
+
    </div>
     
 

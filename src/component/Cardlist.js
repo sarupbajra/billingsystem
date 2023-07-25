@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import {tableDetailInfo} from "../utils/TableInfo"
@@ -46,9 +46,20 @@ function Cardlist() {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [selectedCard, setSelectedCard] = useState();
+  const [paxNumber, setPaxNumber] = useState();
   const [isOccupied, setIsOccupied] = useState(false); 
+  const [selectedTable,setSelectedTable]= useState();
+  useEffect(()=> {
+    tableDetailInfo.tableNo = `tableDetail ${paxNumber}`;
+  })
   const handleClose = () => setShow(false);
   const handleShow = (card) => {
+    setSelectedTable(card.tableNo)
+    console.log("card",card.tableNo);
+    // tableDetailInfo.map((tabledetail)=>{
+      
+    // })
+
     setSelectedCard(card);
     setShow(true);
     setModalShow(true);
@@ -61,12 +72,13 @@ function Cardlist() {
   const handleOccupy = () => {
     setIsOccupied((prevIsOccupied) => !prevIsOccupied);
     handleClose();
+    console.log("tableDetailInfo",tableDetailInfo)
   };
 
   return (
     <div className='contain-occupied'>
       {tableDetailInfo.map((tableDetail, index) => (
-        <Card key={index} className='occupied-card-container' style={{ width: '18rem' }}>
+        <Card key={index} className={`${tableDetail.status === "occupied" ? "occupied-card-container" : "unoccupied-card-container"} card-container `} style={{ width: '18rem' }}>
           <Card.Body>
             <Card.Title>{`table no ${tableDetail.tableNo}`}</Card.Title>
             <div>
@@ -77,7 +89,7 @@ function Cardlist() {
                   <img alt="vaccant" src={VaccantIcon} width="50" height="50" style={{ marginRight: "5px" }}  />
                   
                 )}
-                {tableDetail.status === "occupied" ? ( isOccupied ? (
+                {tableDetail.status === "occupied" ?  (
                   <>
                   <div className=''>
                      <Button className="add-item-btn" onClick={() => handleAddOrder("/fooditem")}>  
@@ -86,7 +98,9 @@ function Cardlist() {
                     </Button>
                     <Button className="add-item-btn" onClick={() => handleShow(tableDetail)}>
                       View
-                    </Button></div>
+                    </Button>
+                    <div>{`billing status: ${tableDetail.billStatus}`}</div>
+                    </div>
                   </>
                 ) : (
                   
@@ -94,15 +108,9 @@ function Cardlist() {
                   Add Occupy Table
                 </Button>
                 
-                )
-                ) : (
+                )}
+                
                   
-                  <Button className="add-item-btn" onClick={() => handleShow(tableDetail)}>
-                    Add Occupy Table
-                  </Button>
-                  
-                  )    
-                }
               </div>
               <Modal
    show={modalShow}
@@ -113,7 +121,7 @@ function Cardlist() {
     > <div className='Modal'>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Table no 1
+        {`Table No ${selectedTable}`}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -122,20 +130,20 @@ function Cardlist() {
         <Form.Control
           aria-label="Small"
           aria-describedby="inputGroup-sizing-sm"
+          // value={this.state.val}
+          onChange={(e)=> setPaxNumber(e.target.value)}
         />
       </InputGroup>
       </Modal.Body>
       <Modal.Footer>
-        {isOccupied ?(
+  
           <Button onClick={handleOccupy}>Occupied</Button>
-        ) : (
-      <Button onClick={()=>handleOccupy()}>Occupy</Button>
-      )}
+        
         <Button onClick={()=>handleClose()}>Close</Button>
 
       </Modal.Footer></div>
     </Modal>
-              <div>bill status: pending</div>
+              {/* <div>bill status: pending</div> */}
             </div>
           </Card.Body>
         </Card>
