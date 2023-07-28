@@ -2,9 +2,9 @@ import React from 'react';
 import './App.css';
 import Navbar from './component/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import FoodItems from './pages/FoodItems';
-import Order from './pages/Order';
+import DashboardPage from './pages/Dashboard';
+import AddOrderPage from './pages/AddOrder';
+// import Order from './pages/Order';
  function App() {
   return (
     <>
@@ -12,9 +12,9 @@ import Order from './pages/Order';
       <Router>
         <Navbar />
         <Routes>
-          <Route path ='/' exact element={<Home/>} />
-          <Route path ='/fooditems' element={<FoodItems/>} />
-          <Route path ='/order' element={<Order/>} />
+          <Route path ='/' exact element={<DashboardPage/>} />
+          <Route path ='/addorder' element={<AddOrderPage/>} />
+          {/* <Route path ='/order' element={<Order/>} /> */}
         </Routes>
       </Router>
      </div> 

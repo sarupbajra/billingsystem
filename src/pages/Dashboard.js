@@ -1,86 +1,46 @@
-import React,{useState, useEffect} from 'react'
+
+import React,{useState,useEffect} from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import {tableDetailInfo} from "../utils/TableInfo"
-import VaccantIcon from "../assets/Icons/vacant.png";
 import Modal from 'react-bootstrap/Modal';
-import OccupiedIcon from "../assets/Icons/occupied.png";
-import '../pages/Home.css';
-
-// import { useNavigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import {tableDetailInfo} from "../utils/TableInfo";
+import { useNavigate } from 'react-router-dom';
+import VaccantIcon from "../assets/Icons/vacant.png";
+import OccupiedIcon from "../assets/Icons/occupied.png";
+import './Home.css';
 import { useDispatch, useSelector} from 'react-redux';
 
-function Cardlist() {
+  
+function DashboardPage() { 
   const navigate = useNavigate();
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [selectedCard, setSelectedCard] = useState();
   const [paxNumber, setPaxNumber] = useState();
-  const [isOccupied, setIsOccupied] = useState(false); 
   const [selectedTable, setSelectedTable] = useState();
   const [tableDetailList, setTableDetailList] = useState([]);
-  const tableList =useSelector ((state) => state.table);
-  const dispatch = useDispatch();
-//   const cardData = [
-//     {
-//       id: 1,
-//          title:'Table T1',  
-//          subtitle: 'Subtitle 1',
-//          content: 'pax 3',
-//        },
-//        {
-//          id: 2,
-//          title:'Table T2',
-//          subtitle: 'Subtitle 2',
-//          content: 'quick examples',
-//        },
-//        {
-//          id: 3,
-//          title:'Table T3',
-//          subtitle: 'Subtitle 3',
-//          content: 'pax',
-//        },
-//        {
-//          id: 4,
-//          title:'Table T4',
-//          subtitle: 'Subtitle 4',
-//          content: 'pax',
-//        },
-//        {
-//         id: 5,
-//          title:'Table T5',
-//          subtitle: 'Subtitle 5',
-//          content: 'pax',
-//        }
-     
-     
-//  ];
-
+  // const tableList =useSelector ((state) => state.table);
+  // const dispatch = useDispatch();
   useEffect(() => {
     tableDetailInfo.tableNo = `tableDetail ${paxNumber}`;
     setTableDetailList(tableDetailInfo);
   }, 
    [paxNumber]);
+
   const handleClose = () => setShow(false);
+  
   const handleShow = (card) => {
-
     setSelectedTable(card)
-    dispatch(selectedTable(card));
-    console.log("card",card.tableNo);
-    // tableDetailInfo.map((tabledetail)=>{
-      
-    // })
-
+    // dispatch(selectedTable(card))
     setSelectedCard(card);
-    dispatch(selectedCard(card))
+    // dispatch(selectedTable(card))
     setShow(true);
     setModalShow(true);
   };
   const handleAddOrder = (tableNo) => {
-    navigate(`/fooditems?table=${tableNo}`);
+    navigate(`/addorder?table=${tableNo}`);
   };
  
 
@@ -101,6 +61,8 @@ function Cardlist() {
     setModalShow(false);
   };
   return (
+ 
+   <div className='contain'>
     <div className='contain-occupied'>
       {tableDetailList.map((tableDetail, index) => (
         <Card key={index} className={`${tableDetail.status === "occupied" ? "occupied-card-container" : "unoccupied-card-container"} card-container `} style={{ width: '18rem' }}>
@@ -118,7 +80,7 @@ function Cardlist() {
                 {tableDetail.status === "occupied" ?  (
                   <>
                   <div className='card-contain'>
-                     <Button className="add-item-btn" onClick={() => handleAddOrder("/fooditem")}>  
+                     <Button className="add-item-btn" onClick={() => handleAddOrder(tableDetail.tableNo)}>  
                     {/* /*handleAddOrder(tableDetail.tableNo) */ }
                       Add Order
                     </Button>
@@ -188,8 +150,10 @@ function Cardlist() {
       </div>
     </Modal>
     </div>
+   </div>   
+     
   );
+
 }
 
-
-export default Cardlist;
+export default DashboardPage;
