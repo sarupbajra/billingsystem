@@ -90,3 +90,13 @@ li span
     padding: 10px;
     text-align: center;
   } */
+
+  .logo-image{
+   
+    width: 90px; 
+    height: 70px; 
+    margin-right: 10px;
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+  }

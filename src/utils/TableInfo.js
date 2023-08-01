@@ -29,13 +29,13 @@ export const tableDetailInfo = [
     },
     {
         tableNo:4,
-        status:"vacant"
+          status:"vacant" 
         // tableNo:4,
         // status:"occupied",
         // pax:6,
         // orderStatus:true,
         // orderDetail:[{itemId:1, foodName:"momo", price:90,qty:1},{itemId:2, foodName:"sameybaji", price:90,qty:3},{itemId:3, foodName:"dachula", price:90,qty:1}],
-        // billStatus:"paid"
+       
     },
     {
         tableNo:5,

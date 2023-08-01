@@ -1,78 +1,118 @@
-.cont
-{
+/* Global styles */
+.cont {
     display: flex;
-    
-}
-
-.left
-{
-    height: 100vh;
-    width: 50%;
-    background-color: #51cacc;
-    padding: 15px;
+    justify-content: space-between;
+    margin: 20px;
+  }
+  
+  .left {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    z-index: 1;
-}
-
-.cardd
-{
-    height: 300px;
-    width: 200px;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    padding: 30px ;
-    align-items: center;
-    flex-direction: column;
-    color: blue;
-    
-    
-}
-
-.right
-{
-    height: 100vh;
+  }
+  
+  .right {
     width: 50%;
-    background-color: #ffeabf;
-    padding: 20px;
-}
-
-.right table
-{
-    width: 500px;
-    
-}
-
-.right table th, td
-{
-    border: 1px solid black;
-}
-.item-table thead, td{
+    margin-left: 20px;
+  }
+  
+  /* Styles for food items */
+  .cardd {
+    border: 1px solid #ccc;
     padding: 10px;
-    font-size: 15px;
-    border-bottom: 1px solid #ddd ;
-}
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+  }
+  
+  .cardd h3 {
+    margin: 10px 0;
+    font-size: 20px;
+  }
+  
+  .cardd h4 {
+    margin: 5px 0;
+  }
+  
+  .imagee img {
+    margin: 10px 0;
+  }
+  
+  .item-add {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .item-add:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styles for the item table */
+  .item-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .item-table th,
+  .item-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .item-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .item-table tfoot td {
+    font-weight: bold;
+  }
+  
+  /* Styles for table info */
+  .table-info {
+    margin-top: 20px;
+  }
+  
+  .table-info h2 {
+    margin-bottom: 10px;
+  }
+  
+  .table-info table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-info th,
+  .table-info td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .table-info th {
+    background-color: #f2f2f2;
+  }
+  
+  .remove-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
 
-.item-table tr:hover{
-    background-color: blue;
-}
-.item-add{
-    font-size: 14px;
-  font-weight: 600;
-  padding: 15px 30px;
-  color: #000;
-  background-color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  transition: 0.2s;
-}
-.item-add:hover{
-    color: #ddd;
-    background-color: blue;
-}
+  .remove-btn:hover {
+    background-color: #0056b3;
+  }
 
-
+  .table-heading {
+    display: flex;
+    color: #007bff;
+    font-size: 18px;
+    justify-content: center;  
+    margin-top: 20px;
+    
+  }

@@ -30,6 +30,7 @@ export default function Navbar() {
     <Link to ="#" className='menu-bars'>
     <FaIcons.FaBars onClick={showSidebar} />
     </Link>
+    <img src='logo-ghasa.png' alt="Logo" className="logo-image" />
     </div>
     <nav className={sidebar ? 'nav-menu active': 'nav-menu'} style={{zIndex: 1000}}>
     

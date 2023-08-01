@@ -1,9 +1,9 @@
  .contain{
     background-color: white;
     margin-left: 60px;
-    margin-top: 20px;
+    margin-top: 60px;
     display: flex;
-    gap: 20px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
@@ -27,10 +27,10 @@
 
 
 .add-item-btn{
-    height: 70px;
-    width: 99px;
-    font-size: 14px;
-    font-weight: 600;
+    height: 60px;
+    width: 90px;
+    font-size: 11px;
+    font-weight: 550;
     padding: 15px 30px;
     color: #000;
     background-color: #fff;
@@ -57,15 +57,10 @@
     
 }
 
-.item-btn:hover{
-    background-color: blue;
+.add-item-btn:hover{
+    background-color: rgb(79, 103, 238);
     color: white;
 }
-
-.banner {
-    background-image: url(../b14.png);
-}
-
 
 
 .contain-occupied{
@@ -75,11 +70,6 @@
     flex-wrap: wrap;
     }
 
-.Earning{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
 
 .vacant-icon{
     display: flex;
@@ -102,14 +92,17 @@
     gap: 10px;
 }
  .bill-status{
+    
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     font-size: 15px;
+    gap: 10px;
+    
  }
 
  .add-occupy-btn {
-    height: 50px;
-    width: 190px;
+    height: 45px;
+    width: 150px;
     font-size: 14px;
     font-weight: 600;
     /* padding: 15px 30px; */
@@ -120,5 +113,10 @@
     border: none;
     outline: none;
     transition: 0.2s;
+ }
+
+ .add-occupy-btn:hover{
+    background-color: rgb(79, 103, 238);
+    color:#fff;
  }
 
