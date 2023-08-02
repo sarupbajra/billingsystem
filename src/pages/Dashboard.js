@@ -64,13 +64,12 @@ function DashboardPage() {
     setModalShow(false);
   };
   return (
-    
     <div className="contain">
       <div>
-      {/* {tableNumbers.map((tableNo) => (
+        {/* {tableNumbers.map((tableNo) => (
         <AddOrderPage key={tableNo} tableNo={tableNo} />
       ))} */}
-    </div>
+      </div>
       <div className="contain-occupied">
         {tableDetailStore.map((tableDetail, index) => (
           <Card
@@ -83,66 +82,81 @@ function DashboardPage() {
             style={{ width: "18rem" }}
           >
             <Card.Body>
-              <Card.Title> {`Table No: ${tableDetail.tableNo}`} </Card.Title>
               <div>
                 <div className="occupied-icon">
-                  {tableDetail.status === "occupied" ? (
-                    <img
-                      alt="occupied"
-                      src={OccupiedIcon}
-                      width="50"
-                      height="50"
-                      style={{ marginRight: "5px" }}
-                    />
-                  ) : (
-                    <img
-                      alt="vaccant"
-                      src={VaccantIcon}
-                      width="50"
-                      height="50"
-                      style={{ marginRight: "5px" }}
-                    />
-                  )}
-                  {tableDetail.status === "occupied" ? (
-                    <>
-                      <div className="card-contain">
+                  <div className="occupancy-icon">
+                    {" "}
+                    <Card.Title>
+                      {tableDetail.status === "occupied" ? (
+                        <img
+                          alt="occupied"
+                          src={OccupiedIcon}
+                          width="50"
+                          height="50"
+                          style={{ marginRight: "5px" }}
+                        />
+                      ) : (
+                        <img
+                          alt="vaccant"
+                          src={VaccantIcon}
+                          width="50"
+                          height="50"
+                          style={{ marginRight: "5px" }}
+                        />
+                      )}
+                    </Card.Title>
+                  </div>
+                  <div className="card-contains">
+                    <div className="table">{`Table No: ${tableDetail.tableNo}`}</div>
+                    {tableDetail.status === "occupied" ? (
+                      <>
+                        <div className="card-contain">
+                          <Button
+                            className="add-item-btn"
+                            onClick={() => handleAddOrder(tableDetail.tableNo)}
+                          >
+                            {/* /*handleAddOrder(tableDetail.tableNo) */}
+                            Add Order
+                          </Button>
+                          <Button
+                            className="add-item-btn"
+                            onClick={() => handleShow(tableDetail)}
+                          >
+                            View
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="add-occupy-btn">
                         <Button
-                          className="add-item-btn"
-                          onClick={() => handleAddOrder(tableDetail.tableNo)}
-                        >
-                          {/* /*handleAddOrder(tableDetail.tableNo) */}
-                          Add Order
-                        </Button>
-                        <Button
-                          className="add-item-btn"
+                          className="add-occupy-btn"
                           onClick={() => handleShow(tableDetail)}
                         >
-                          View
+                          Table Available
                         </Button>
                       </div>
-                      
-                    </>
-                  ) : (
-                    <div className="add-occupy-btn">
-                      <Button
-                        className="add-occupy-btn"
-                        onClick={() => handleShow(tableDetail)}
-                      >
-                        Add Occupy Table
-                      </Button>
-                    </div>
-                  )}
-                  <div></div>
+                    )}
+
+                    <div></div>
+                    {tableDetail.status === "occupied" ? (
+                      <>
+                        <div className="bill-status">
+                          {`billing status: ${tableDetail.billStatus}`}
+                        </div>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                 </div>
-                <Card.Footer>
-                        <div className="bill-status">{`billing status: ${tableDetail.billStatus}`}</div>
-                      </Card.Footer>
 
                 {/* <div>bill status: pending</div> */}
               </div>
             </Card.Body>
           </Card>
         ))}
+        <div>Pending Payment</div>
+        <div>Total Earnings </div>
 
         <Modal
           show={modalShow}
