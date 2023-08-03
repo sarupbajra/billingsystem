@@ -7,7 +7,7 @@ import { SidebarData } from "./SidebarData";
 import "./Navbar.css";
 import { IconContext } from "react-icons";
 import { Button } from "react-bootstrap";
-
+import AddOrderPage from "../pages/AddOrder";
 export default function Navbar() {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => {

@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route path="/" exact element={<Login />} />
             <Route path="/dashboard" exact element={<DashboardPage />} />
-            <Route path="/addorder" element={<AddOrderPage />} />
+            <Route path="/addorder/:tableId" element={<AddOrderPage />} />
 
             {/* <Route path ='/order' element={<Order/>} /> */}
           </Routes>

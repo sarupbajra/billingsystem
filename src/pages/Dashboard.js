@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import VaccantIcon from "../assets/Icons/vacant.png";
 import OccupiedIcon from "../assets/Icons/occupied.png";
 import "./Home.css";
+import Navbar from "../component/Navbar";
 // import AddOrderPage from './AddOrder';
 
 function DashboardPage() {
@@ -44,7 +45,7 @@ function DashboardPage() {
     setModalShow(true);
   };
   const handleAddOrder = (tableNo) => {
-    navigate(`/addorder?table=${tableNo}`);
+    navigate(`/addorder/${tableNo}`);
   };
 
   const handleOccupy = () => {

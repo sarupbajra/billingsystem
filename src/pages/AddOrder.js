@@ -1,8 +1,13 @@
 import "../pages/card.css";
 import React, { useState } from "react";
 import { tableDetailInfo, foodMenuItems } from "../utils/TableInfo";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-
+import {
+  Link,
+  useNavigate,
+  useSearchParams,
+  useParams,
+} from "react-router-dom";
+import Navbar from "../component/Navbar";
 function AddOrderPage() {
   const [addedItems, setAddedItems] = useState([]);
   const [tables, setTables] = useState(tableDetailInfo);
@@ -11,9 +16,7 @@ function AddOrderPage() {
     setAddedItems((prevItems) => prevItems.filter((item, i) => i !== index));
   };
 
-  const [searchParams] = useSearchParams();
-
-  const tableNumber = searchParams.get("table");
+  const { tableId } = useParams();
 
   const handleAddItem = (itemName, price, tableNo) => {
     const newItem = {
@@ -27,7 +30,8 @@ function AddOrderPage() {
 
   return (
     <>
-      <div className="table-heading">{`Table No: ${tableNumber}`} </div>
+      <Navbar />
+      <div className="table-heading">{`Table No: ${tableId}`} </div>
       <div className="cont">
         <div className="left">
           {foodMenuItems.map((foodItem, index) => (
