@@ -18,15 +18,18 @@ function AddOrderPage() {
   useEffect(() => {
     // Load order data from local storage when the component mounts
     //
-    dispatch(foodMenuSlice.actions.loadOrderTables());
-  }, [dispatch]);
-
+    //   dispatch(foodMenuSlice.actions.loadOrderTables());
+    // }, [dispatch]);
+    const storedOrderTables =
+      JSON.parse(localStorage.getItem("orderTables")) || {};
+    setOrderTables(storedOrderTables);
+  }, []);
   useEffect(() => {
     // Save order data to local storage whenever it changes
-    //   localStorage.setItem("orderTables", JSON.stringify(orderTables));
-    // }, [orderTables]);
-    dispatch(foodMenuSlice.actions.saveOrderTables(orderTables));
-  }, [dispatch, orderTables]);
+    localStorage.setItem("orderTables", JSON.stringify(orderTables));
+  }, [orderTables]);
+  //   dispatch(foodMenuSlice.actions.saveOrderTables(orderTables));
+  // }, [dispatch, orderTables]);
 
   const handleRemoveItem = (tableId, index) => {
     setOrderTables((prevTables) => {
