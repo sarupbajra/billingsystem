@@ -1,24 +1,36 @@
-import React, {useState} from 'react'
-import MainButton from '../component/MainButton';
-export default function Quantity() {
-    
-    const [count,setCount] = useState(0);
-    const handleButtonClick = (action) => {
-        const countAsNumber = parseInt(count, 10);
-        if (action=== '+') {
-            setCount(countAsNumber + 1);
-        }
-        else if (action === '-' && countAsNumber > 0) {
-            setCount(countAsNumber - 1);
-          }
+import React from "react";
+import MainButton from "../component/MainButton";
+import "../pages/card.css";
+// const buttonStyle = {
+//   padding: "5px 10px",
+//   fontSize: "16px",
+//   fontWeight: "bold",
+//   backgroundColor: "#f0f0f0",
+//   border: "1px solid #ccc",
+//   borderRadius: "5px",
+//   cursor: "pointer",
+//   marginRight: "5px",
+// };
+export default function Quantity({ value, onChange }) {
+  const handleIncrement = () => {
+    onChange(value + 1);
+  };
+
+  const handleDecrement = () => {
+    if (value > 0) {
+      onChange(value - 1);
     }
+  };
+
   return (
-    <>
-    <div>{count}</div>
-    <div>
-        <MainButton title="+" onClick={()=>handleButtonClick("+")} />
-        <MainButton title="-" onClick={()=>handleButtonClick("-")} />
+    <div className="quantity-container">
+      <div className="quantity-button">
+        <MainButton title="+" onClick={handleIncrement} />
+      </div>
+      <div className="quantity-value">{value}</div>
+      <div className="quantity-button">
+        <MainButton title="-" onClick={handleDecrement} />
+      </div>
     </div>
-    </>
-  )
+  );
 }

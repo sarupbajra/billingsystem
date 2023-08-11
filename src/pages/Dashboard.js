@@ -8,8 +8,8 @@ import { tableDetailSlice } from "../redux/TableDetail/tabledetail.slice";
 import InputGroup from "react-bootstrap/InputGroup";
 import { tableDetailInfo } from "../utils/TableInfo";
 import { useNavigate } from "react-router-dom";
-import VaccantIcon from "../assets/Icons/vacant.png";
-import OccupiedIcon from "../assets/Icons/occupied.png";
+import VaccantIcon from "../assets/Icons/vaccant2.png";
+import OccupiedIcon from "../assets/Icons/occupy.png";
 import "./Home.css";
 import Navbar from "../component/Navbar";
 // import AddOrderPage from './AddOrder';
@@ -98,6 +98,7 @@ function DashboardPage() {
                         />
                       ) : (
                         <img
+                          className="vacant"
                           alt="vaccant"
                           src={VaccantIcon}
                           width="50"
@@ -139,6 +140,7 @@ function DashboardPage() {
                     )}
 
                     <div></div>
+
                     {tableDetail.status === "occupied" ? (
                       <>
                         <div className="bill-status">

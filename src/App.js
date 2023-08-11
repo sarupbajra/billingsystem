@@ -5,19 +5,25 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DashboardPage from "./pages/Dashboard";
 import AddOrderPage from "./pages/AddOrder";
 import FoodItem from "./component/FoodItem";
-import Login from "./pages/login";
+import { useState } from "react";
+import { Login } from "./pages/login";
+import Register from "./pages/Register";
 // import Order from './pages/Order';
+import Home from "./pages/home";
+import BillingPage from "./component/BillingPage";
 function App() {
   return (
     <>
       <div>
         <Router>
           <Navbar />
-          <Routes>
-            <Route path="/" exact element={<Login />} />
-            <Route path="/dashboard" exact element={<DashboardPage />} />
-            <Route path="/addorder/:tableId" element={<AddOrderPage />} />
 
+          <Routes>
+            {/* <Route path="/" exact element={<Login />} /> */}
+            <Route path="/" exact element={<Home />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/addorder/:tableId" element={<AddOrderPage />} />
+            <Route path="/billing/:tableId" component={BillingPage} />
             {/* <Route path ='/order' element={<Order/>} /> */}
           </Routes>
         </Router>

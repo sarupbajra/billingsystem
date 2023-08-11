@@ -1,7 +1,7 @@
  .contain{
     background-color: white;
-    margin-left: 180px;
-    margin-top: 60px;
+    margin-left: 40px;
+    margin-top: 40px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -66,7 +66,7 @@
 .contain-occupied{
     background-color: white;
     display: flex;
-    gap: 60px;
+    gap: 40px;
     flex-wrap: wrap;
     }
 
@@ -74,6 +74,7 @@
 .vacant-icon{
     display: flex;
     justify-content: space-between;
+    color: #fff;
 }
 
 .occupied-icon{
@@ -96,6 +97,8 @@
     display: flex;
     flex-direction: row;
     font-size: 15px;
+    font-weight: 600;
+    margin-top: 5px;
     gap: 10px;
     
  }
@@ -122,8 +125,10 @@
     color:#fff;
  }
 
- .occupancy-icon{
-    
+ .table{
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
 
  }
 .card-contains{

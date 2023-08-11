@@ -128,10 +128,43 @@
 
   .table-heading {
     display: flex;
-    color: #000;
-    font-size: 18px;
+    color: rgb(206, 31, 31);
+    font-size: 20px;
     justify-content: center;  
-    /* margin-top: 20px; */
+    margin-top: 20px;
     background-color:  #fff;
     
   }
+
+  .quantity-btn{
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Quantity.css */
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-button {
+  font-size: 18px;
+  /* background-color: #f0f0f0;  */
+  border: 1px solid #ccc;
+  height: 50px; 
+  width: 50px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.quantity-button:hover {
+  background-color: #ccc; 
+  color: #fff;
+}
+
+.quantity-value {
+  font-size: 18px;
+  margin: 0 10px;
+}
