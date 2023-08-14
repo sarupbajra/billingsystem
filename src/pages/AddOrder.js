@@ -12,6 +12,24 @@ function AddOrderPage() {
   const dispatch = useDispatch();
   const [foodMenuList, setFoodMenuList] = useState([]);
   const [orderTables, setOrderTables] = useState({});
+  const [newFoodName, setNewFoodName] = useState("");
+  const [newFoodPrice, setNewFoodPrice] = useState(0);
+
+  const handleAddNewFoodItem = () => {
+    if (newFoodName && newFoodPrice > 0) {
+      const newFoodItem = {
+        foodName: newFoodName,
+        price: newFoodPrice,
+        // Add other properties as needed
+      };
+
+      setFoodMenuList((prevFoodMenuList) => [...prevFoodMenuList, newFoodItem]);
+
+      // Clear input fields
+      setNewFoodName("");
+      setNewFoodPrice(0);
+    }
+  };
   // const foodMenuStore = useSelector((state) => state.foodMenu.foodMenuItems);
   // const menuItems = useSelector((state) => state.foodMenu.foodMenuItems);
   // const orderTables =useSelector((state)=> state.orderTables);
@@ -45,33 +63,52 @@ function AddOrderPage() {
   };
 
   const handleAddItem = (tableId, itemName, price, quantity) => {
-    const newItem = {
-      itemName,
-      price,
-      quantity,
-      cost: price * quantity,
-    };
     setOrderTables((prevTables) => {
       const tableData = prevTables[tableId] || { items: [] };
-      return {
-        ...prevTables,
-        [tableId]: {
-          ...tableData,
-          items: [...tableData.items, newItem],
-        },
-      };
+
+      // Check if the item already exists in the tableData's items
+      const existingItem = tableData.items.find(
+        (item) => item.itemName === itemName
+      );
+
+      if (existingItem) {
+        // If the item exists, update its quantity
+        const updatedItems = tableData.items.map((item) =>
+          item.itemName === itemName
+            ? {
+                ...item,
+                quantity: item.quantity + quantity,
+                cost: item.price * (item.quantity + quantity),
+              }
+            : item
+        );
+        const updatedTable = { ...tableData, items: updatedItems };
+        return { ...prevTables, [tableId]: updatedTable };
+      } else {
+        // If the item doesn't exist, add it to the items list
+        const newItem = {
+          itemName,
+          price,
+          quantity,
+          cost: price * quantity,
+        };
+        const updatedItems = [...tableData.items, newItem];
+        const updatedTable = { ...tableData, items: updatedItems };
+        return { ...prevTables, [tableId]: updatedTable };
+      }
     });
   };
-  const handleGenerateBill = () => {
-    console.log("Generating bill for table:", tableId);
-    // Store the order data for the current table in local storage
-    localStorage.setItem(
-      `billData_${tableId}`,
-      JSON.stringify(orderTables[tableId]?.items)
-    );
-    // Navigate to the billing page for the current table
-    navigate(`/billing/${tableId}`);
-  };
+
+  // const handleGenerateBill = () => {
+  //   console.log("Generating bill for table:", tableId);
+  //   // Store the order data for the current table in local storage
+  //   localStorage.setItem(
+  //     `billData_${tableId}`,
+  //     JSON.stringify(orderTables[tableId]?.items)
+  //   );
+  //   // Navigate to the billing page for the current table
+  //   navigate(`/billing/${tableId}`);
+  // };
   const handleQuantityChange = (tableId, index, quantity) => {
     setOrderTables((prevTables) => {
       const updatedTable = {
@@ -82,7 +119,9 @@ function AddOrderPage() {
             : item
         ),
       };
-
+      updatedTable.items = updatedTable.items.filter(
+        (item) => item.quantity > 0
+      );
       return {
         ...prevTables,
         [tableId]: updatedTable,
@@ -168,13 +207,29 @@ function AddOrderPage() {
                 <td colSpan="4">Total</td>
                 <td>{`Rs ${total(tableId)}`}</td>
                 <td></td>
-                <td>
+                {/* <td>
                   <button onClick={handleGenerateBill}>Generate Bill</button>
-                </td>
+                </td> */}
               </tr>
             </tfoot>
           </table>
         </div>
+      </div>
+      <div className="add-food-item">
+        <h3>Add New Food Item</h3>
+        <input
+          type="text"
+          placeholder="Food Name"
+          value={newFoodName}
+          onChange={(e) => setNewFoodName(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          value={newFoodPrice}
+          onChange={(e) => setNewFoodPrice(parseFloat(e.target.value))}
+        />
+        <button onClick={handleAddNewFoodItem}>Add Item</button>
       </div>
     </>
   );

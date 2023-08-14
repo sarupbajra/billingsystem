@@ -146,25 +146,27 @@
 .quantity-container {
   display: flex;
   align-items: center;
-}
+} */
 
-.quantity-button {
-  font-size: 18px;
+ .quantity-button {
+  font-size: 18px; 
   /* background-color: #f0f0f0;  */
-  border: 1px solid #ccc;
-  height: 50px; 
-  width: 50px;
+   /* border: 1px solid #ccc; */
+  height: 40px; 
+  width: 30px; 
   padding: 6px 12px;
+  padding-right: 24px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-}
+} 
 
-.quantity-button:hover {
-  background-color: #ccc; 
+ .quantity-button:hover {
+  background-color: #fff; 
   color: #fff;
-}
+} 
 
 .quantity-value {
   font-size: 18px;
   margin: 0 10px;
+  
 }

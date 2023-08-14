@@ -64,6 +64,21 @@ function DashboardPage() {
     // setTableDetailList(tableDetailStore);
     setModalShow(false);
   };
+  const handlePayBill = () => {
+    const updatedTableList = tableDetailStore.map((table) =>
+      table.tableNo === selectedTable.tableNo
+        ? {
+            ...table,
+            status: "vacant",
+            pax: 0,
+            billStatus: "paid",
+          }
+        : table
+    );
+    dispatch(tableDetailSlice.actions.updateTableDetail(updatedTableList));
+    setModalShow(false);
+  };
+
   return (
     <div className="contain">
       <div>
@@ -158,8 +173,8 @@ function DashboardPage() {
             </Card.Body>
           </Card>
         ))}
-        <div>Pending Payment</div>
-        <div>Total Earnings </div>
+        {/* <div>Pending Payment</div>
+        <div>Total Earnings </div> */}
 
         <Modal
           show={modalShow}
@@ -187,9 +202,17 @@ function DashboardPage() {
               </InputGroup>
             </Modal.Body>
             <Modal.Footer>
+              {/* {selectedTable.billStatus === "pending" ? ( */}
+              {/* <> */}
               <Button onClick={handleOccupy}>Occupied</Button>
-
               <Button onClick={handleClose}>Close</Button>
+              {/* </> */}
+              {/* ) : (
+    <>
+      <Button onClick={handlePayBill}>Pay Bill</Button>
+      <Button onClick={handleClose}>Close</Button>
+    </>
+  )} */}
             </Modal.Footer>
           </div>
         </Modal>

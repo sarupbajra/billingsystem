@@ -52,7 +52,7 @@ export const Login = (props) => {
             id="email"
             name="email"
           />
-          {errors.email && <p className="error-message">{errors.email}</p>}
+          {errors.email && <p className="error-message">*{errors.email}</p>}
           <label htmlFor="password">Password</label>
           <input
             value={password}
@@ -63,7 +63,7 @@ export const Login = (props) => {
             name="password"
           />
           {errors.password && (
-            <p className="error-message">{errors.password}</p>
+            <p className="error-message">*{errors.password}</p>
           )}
           <button type="submit">Log In</button>
         </form>
