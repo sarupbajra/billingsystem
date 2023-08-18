@@ -23,7 +23,14 @@ function AddOrderPage() {
   const [orderTables, setOrderTables] = useState({});
   const [newFoodName, setNewFoodName] = useState("");
   const [newFoodPrice, setNewFoodPrice] = useState(0);
-  const orderData = useSelector((state) => state.orderTables[tableId]);
+  const orderData = useSelector((state) => state.foodMenu.orderTables);
+
+  console.log("newwewew", tableId, orderData);
+  const ids = orderTables[tableId]?.items.map(({ itemId }) => itemId);
+  const filtered = orderTables[tableId]?.items.filter(
+    ({ itemId }, index) => !ids.includes(itemId, index + 1)
+  );
+  console.log("filter", filtered);
   const handleAddNewFoodItem = () => {
     console.log("nnewfood", newFoodName);
     if (newFoodName && newFoodPrice > 0) {
@@ -43,15 +50,16 @@ function AddOrderPage() {
   // const foodMenuStore = useSelector((state) => state.foodMenu.foodMenuItems);
   // const menuItems = useSelector((state) => state.foodMenu.foodMenuItems);
 
-  useEffect(() => {
-    // Load order data from local storage when the component mounts
-    //
-    //   dispatch(foodMenuSlice.actions.loadOrderTables());
-    // }, [dispatch]);
-    const storedOrderTables =
-      JSON.parse(localStorage.getItem("orderTables")) || {};
-    setOrderTables(storedOrderTables);
-  }, []);
+  // useEffect(() => {
+  //   console.log("tabababba", tableId);
+  // Load order data from local storage when the component mounts
+  //
+  //   dispatch(foodMenuSlice.actions.loadOrderTables());
+  // }, [dispatch]);
+  //   const storedOrderTables =
+  //     JSON.parse(localStorage.getItem("orderTables")) || {};
+  //   setOrderTables(storedOrderTables);
+  // }, []);
   useEffect(() => {
     // Save order data to local storage whenever it changes
     localStorage.setItem("orderTables", JSON.stringify(orderTables));
@@ -148,15 +156,19 @@ function AddOrderPage() {
     dispatch(updateQuantity({ tableId, index, quantity }));
   };
 
-  const calculateItemCost = (price, quantity) => price * quantity;
-
-  const total = orderData?.items.reduce((acc, item) => acc + item.cost, 0) || 0;
+  // const calculateItemCost = (price, quantity) => price * quantity;
+  const total = (tableId) =>
+    orderTables[tableId]?.items.reduce((acc, item) => acc + item.cost, 0) || 0;
+  // const total = orderData.reduce((acc, item) => acc + item.price, 0) || 0;
+  console.log("total", orderData);
 
   return (
     <>
+      {/* <div>hello</div> */}
       <div className="table-heading">{`Table No: ${tableId}`} </div>
       <div className="cont">
         <div className="left">
+          {/* <FoodItemsPage /> */}
           {foodMenuItem.map((foodItem, index) => (
             <div className="cardd" key={index}>
               <div className="imagee">
@@ -225,15 +237,15 @@ function AddOrderPage() {
                 <td colSpan="4">Total</td>
                 <td>{`Rs ${total(tableId)}`}</td>
                 <td></td>
-                <td>
+                {/* <td>
                   <button onClick={handleGenerateBill}>Generate Bill</button>
-                </td>
+                </td> */}
               </tr>
             </tfoot>
           </table>
         </div>
       </div>
-      <div className="add-food-item">
+      {/* <div className="add-food-item">
         <h3>Add New Food Item</h3>
         <input
           type="text"
@@ -248,7 +260,7 @@ function AddOrderPage() {
           onChange={(e) => setNewFoodPrice(parseFloat(e.target.value))}
         />
         <button onClick={handleAddNewFoodItem}>Add Item</button>
-      </div>
+      </div> */}
       <Link to="/food-items">Manage Food Items</Link>
     </>
   );

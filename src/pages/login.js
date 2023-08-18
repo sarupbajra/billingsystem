@@ -18,25 +18,23 @@ export const Login = (props) => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+  const allowedEmail = "sarupbajracharya@gmail.com";
+  const allowedPassword = "12345678";
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginSchema
-      .validate({ email, password }, { abortEarly: false })
-      .then(() => {
-        // Validation successful
-        console.log("Login data:", { email, password });
-        // Perform your login logic here (e.g., calling an API to validate credentials)
-        // For now, we just navigate to the DashboardPage
-        navigate("/Dashboard");
-      })
-      .catch((validationErrors) => {
-        // Validation failed
-        const newErrors = {};
-        validationErrors.inner.forEach((error) => {
-          newErrors[error.path] = error.message;
-        });
-        setErrors(newErrors);
-      });
+
+    if (email === allowedEmail && password === allowedPassword) {
+      // Successful login
+      console.log("Login successful for:", email);
+      // Perform additional login logic or API calls if needed
+
+      // Navigate to the DashboardPage
+      navigate("/Dashboard");
+    } else {
+      // Invalid credentials
+      setErrors({ credentials: "Invalid email or password" });
+    }
   };
 
   return (
@@ -52,7 +50,6 @@ export const Login = (props) => {
             id="email"
             name="email"
           />
-          {errors.email && <p className="error-message">*{errors.email}</p>}
           <label htmlFor="password">Password</label>
           <input
             value={password}
@@ -62,8 +59,8 @@ export const Login = (props) => {
             id="password"
             name="password"
           />
-          {errors.password && (
-            <p className="error-message">*{errors.password}</p>
+          {errors.credentials && (
+            <p className="error-message">{errors.credentials}</p>
           )}
           <button type="submit">Log In</button>
         </form>

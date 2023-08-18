@@ -232,3 +232,34 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.food-items-container {
+  margin-bottom: 20px;
+}
+
+.food-items-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.food-item-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  width: 150px;
+}
+
+.food-item-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+.food-item-card h3 {
+  margin: 10px 0;
+}
+
+.food-item-card p {
+  margin: 5px 0;
+}
+
