@@ -159,7 +159,7 @@ function DashboardPage() {
                     {tableDetail.status === "occupied" ? (
                       <>
                         <div className="bill-status">
-                          {`billing status: ${tableDetail.billStatus}`}
+                          {`Billing status: ${tableDetail.billStatus}`}
                         </div>
                       </>
                     ) : (

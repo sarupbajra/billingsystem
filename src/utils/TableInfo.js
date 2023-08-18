@@ -44,7 +44,7 @@ export const tableDetailInfo = [
   },
 ];
 
-export const foodMenuItems = [
+export const foodMenuItem = [
   { itemId: 1, foodName: "Momo", price: 90, src: momo },
   { itemId: 2, foodName: "Chyang", price: 80, src: chyang },
   { itemId: 3, foodName: "Yomari", price: 90, src: yomari },

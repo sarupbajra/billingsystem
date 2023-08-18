@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { tableDetailInfo, foodMenuItems } from "../utils/TableInfo";
+import { tableDetailInfo, foodMenuItem } from "../utils/TableInfo";
 import { useNavigate, useParams } from "react-router-dom";
 import Quantity from "../component/Quantity";
 import "../pages/card.css";
 import { useDispatch, useSelector } from "react-redux";
 import foodMenuSlice from "../redux/TableDetail/foodMenu.slice";
+import FoodItemsPage from "./FoodItemsPage";
+import { Link } from "react-router-dom";
+import { addFoodItem } from "../redux/foodMenu.slice";
+import {
+  addItem,
+  removeItem,
+  updateQuantity,
+} from "../redux/TableDetail/orderTable.slice";
+
 function AddOrderPage() {
   const [tables, setTables] = useState(tableDetailInfo);
   const { tableId } = useParams();
@@ -14,8 +23,9 @@ function AddOrderPage() {
   const [orderTables, setOrderTables] = useState({});
   const [newFoodName, setNewFoodName] = useState("");
   const [newFoodPrice, setNewFoodPrice] = useState(0);
-
+  const orderData = useSelector((state) => state.orderTables[tableId]);
   const handleAddNewFoodItem = () => {
+    console.log("nnewfood", newFoodName);
     if (newFoodName && newFoodPrice > 0) {
       const newFoodItem = {
         foodName: newFoodName,
@@ -32,7 +42,7 @@ function AddOrderPage() {
   };
   // const foodMenuStore = useSelector((state) => state.foodMenu.foodMenuItems);
   // const menuItems = useSelector((state) => state.foodMenu.foodMenuItems);
-  // const orderTables =useSelector((state)=> state.orderTables);
+
   useEffect(() => {
     // Load order data from local storage when the component mounts
     //
@@ -60,6 +70,7 @@ function AddOrderPage() {
         [tableId]: updatedTable,
       };
     });
+    dispatch(removeItem({ tableId, index }));
   };
 
   const handleAddItem = (tableId, itemName, price, quantity) => {
@@ -94,21 +105,28 @@ function AddOrderPage() {
         };
         const updatedItems = [...tableData.items, newItem];
         const updatedTable = { ...tableData, items: updatedItems };
+        // Dispatch the addItem action with relevant payload
+        dispatch(
+          addItem({
+            tableId,
+            item: newItem,
+          })
+        );
         return { ...prevTables, [tableId]: updatedTable };
       }
     });
   };
 
-  // const handleGenerateBill = () => {
-  //   console.log("Generating bill for table:", tableId);
-  //   // Store the order data for the current table in local storage
-  //   localStorage.setItem(
-  //     `billData_${tableId}`,
-  //     JSON.stringify(orderTables[tableId]?.items)
-  //   );
-  //   // Navigate to the billing page for the current table
-  //   navigate(`/billing/${tableId}`);
-  // };
+  const handleGenerateBill = () => {
+    console.log("Generating bill for table:", tableId);
+    // Store the order data for the current table in local storage
+    localStorage.setItem(
+      `billData_${tableId}`,
+      JSON.stringify(orderTables[tableId]?.items)
+    );
+    // Navigate to the billing page for the current table
+    navigate(`/billing/${tableId}`);
+  };
   const handleQuantityChange = (tableId, index, quantity) => {
     setOrderTables((prevTables) => {
       const updatedTable = {
@@ -127,19 +145,19 @@ function AddOrderPage() {
         [tableId]: updatedTable,
       };
     });
+    dispatch(updateQuantity({ tableId, index, quantity }));
   };
 
   const calculateItemCost = (price, quantity) => price * quantity;
 
-  const total = (tableId) =>
-    orderTables[tableId]?.items.reduce((acc, item) => acc + item.cost, 0) || 0;
+  const total = orderData?.items.reduce((acc, item) => acc + item.cost, 0) || 0;
 
   return (
     <>
       <div className="table-heading">{`Table No: ${tableId}`} </div>
       <div className="cont">
         <div className="left">
-          {foodMenuItems.map((foodItem, index) => (
+          {foodMenuItem.map((foodItem, index) => (
             <div className="cardd" key={index}>
               <div className="imagee">
                 <img
@@ -207,9 +225,9 @@ function AddOrderPage() {
                 <td colSpan="4">Total</td>
                 <td>{`Rs ${total(tableId)}`}</td>
                 <td></td>
-                {/* <td>
+                <td>
                   <button onClick={handleGenerateBill}>Generate Bill</button>
-                </td> */}
+                </td>
               </tr>
             </tfoot>
           </table>
@@ -231,6 +249,7 @@ function AddOrderPage() {
         />
         <button onClick={handleAddNewFoodItem}>Add Item</button>
       </div>
+      <Link to="/food-items">Manage Food Items</Link>
     </>
   );
 }

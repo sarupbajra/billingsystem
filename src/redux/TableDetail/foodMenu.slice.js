@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { foodMenuItems } from "../../utils/TableInfo";
+import { foodMenuItem } from "../../utils/TableInfo";
 export const foodMenuSlice = createSlice({
   name: "foodMenu",
   initialState: {
-    foodMenuItems: foodMenuItems,
+    foodMenuItem: foodMenuItem,
     orderTables: JSON.parse(localStorage.getItem("orderTables")) || {},
   },
   reducers: {
@@ -54,6 +54,21 @@ export const foodMenuSlice = createSlice({
     saveOrderTables: (state) => {
       localStorage.setItem("orderTables", JSON.stringify(state.orderTables));
     },
+    addMenuItem: (state, action) => {
+      state.foodMenuItem.push(action.payload);
+    },
+
+    // Edit a menu item
+    editMenuItem: (state, action) => {
+      const { index, updatedItem } = action.payload;
+      state.foodMenuItem[index] = updatedItem;
+    },
+
+    // Delete a menu item
+    deleteMenuItem: (state, action) => {
+      const index = action.payload;
+      state.foodMenuItem.splice(index, 1);
+    },
   },
 });
 
@@ -63,5 +78,8 @@ export const {
   updateItemQuantity,
   loadOrderTables,
   saveOrderTables,
+  addMenuItem,
+  editMenuItem,
+  deleteMenuItem,
 } = foodMenuSlice.actions;
 export default foodMenuSlice.reducer;
