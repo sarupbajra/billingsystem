@@ -8,9 +8,10 @@ import { tableDetailSlice } from "../redux/TableDetail/tabledetail.slice";
 import InputGroup from "react-bootstrap/InputGroup";
 import { tableDetailInfo } from "../utils/TableInfo";
 import { useNavigate } from "react-router-dom";
-import VaccantIcon from "../assets/Icons/vacant.png";
-import OccupiedIcon from "../assets/Icons/occupied.png";
+import VaccantIcon from "../assets/Icons/vaccant2.png";
+import OccupiedIcon from "../assets/Icons/occupy.png";
 import "./Home.css";
+import Navbar from "../component/Navbar";
 // import AddOrderPage from './AddOrder';
 
 function DashboardPage() {
@@ -44,7 +45,7 @@ function DashboardPage() {
     setModalShow(true);
   };
   const handleAddOrder = (tableNo) => {
-    navigate(`/addorder?table=${tableNo}`);
+    navigate(`/addorder/${tableNo}`);
   };
 
   const handleOccupy = () => {
@@ -63,14 +64,28 @@ function DashboardPage() {
     // setTableDetailList(tableDetailStore);
     setModalShow(false);
   };
+  const handlePayBill = () => {
+    const updatedTableList = tableDetailStore.map((table) =>
+      table.tableNo === selectedTable.tableNo
+        ? {
+            ...table,
+            status: "vacant",
+            pax: 0,
+            billStatus: "paid",
+          }
+        : table
+    );
+    dispatch(tableDetailSlice.actions.updateTableDetail(updatedTableList));
+    setModalShow(false);
+  };
+
   return (
-    
     <div className="contain">
       <div>
-      {/* {tableNumbers.map((tableNo) => (
+        {/* {tableNumbers.map((tableNo) => (
         <AddOrderPage key={tableNo} tableNo={tableNo} />
       ))} */}
-    </div>
+      </div>
       <div className="contain-occupied">
         {tableDetailStore.map((tableDetail, index) => (
           <Card
@@ -83,66 +98,83 @@ function DashboardPage() {
             style={{ width: "18rem" }}
           >
             <Card.Body>
-              <Card.Title> {`Table No: ${tableDetail.tableNo}`} </Card.Title>
               <div>
                 <div className="occupied-icon">
-                  {tableDetail.status === "occupied" ? (
-                    <img
-                      alt="occupied"
-                      src={OccupiedIcon}
-                      width="50"
-                      height="50"
-                      style={{ marginRight: "5px" }}
-                    />
-                  ) : (
-                    <img
-                      alt="vaccant"
-                      src={VaccantIcon}
-                      width="50"
-                      height="50"
-                      style={{ marginRight: "5px" }}
-                    />
-                  )}
-                  {tableDetail.status === "occupied" ? (
-                    <>
-                      <div className="card-contain">
+                  <div className="occupancy-icon">
+                    {" "}
+                    <Card.Title>
+                      {tableDetail.status === "occupied" ? (
+                        <img
+                          alt="occupied"
+                          src={OccupiedIcon}
+                          width="50"
+                          height="50"
+                          style={{ marginRight: "5px" }}
+                        />
+                      ) : (
+                        <img
+                          className="vacant"
+                          alt="vaccant"
+                          src={VaccantIcon}
+                          width="50"
+                          height="50"
+                          style={{ marginRight: "5px" }}
+                        />
+                      )}
+                    </Card.Title>
+                  </div>
+                  <div className="card-contains">
+                    <div className="table">{`Table No: ${tableDetail.tableNo}`}</div>
+                    {tableDetail.status === "occupied" ? (
+                      <>
+                        <div className="card-contain">
+                          <Button
+                            className="add-item-btn"
+                            onClick={() => handleAddOrder(tableDetail.tableNo)}
+                          >
+                            {/* /*handleAddOrder(tableDetail.tableNo) */}
+                            Add Order
+                          </Button>
+                          <Button
+                            className="add-item-btn"
+                            onClick={() => handleShow(tableDetail)}
+                          >
+                            View
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="add-occupy-btn">
                         <Button
-                          className="add-item-btn"
-                          onClick={() => handleAddOrder(tableDetail.tableNo)}
-                        >
-                          {/* /*handleAddOrder(tableDetail.tableNo) */}
-                          Add Order
-                        </Button>
-                        <Button
-                          className="add-item-btn"
+                          className="add-occupy-btn"
                           onClick={() => handleShow(tableDetail)}
                         >
-                          View
+                          Table Available
                         </Button>
                       </div>
-                      
-                    </>
-                  ) : (
-                    <div className="add-occupy-btn">
-                      <Button
-                        className="add-occupy-btn"
-                        onClick={() => handleShow(tableDetail)}
-                      >
-                        Add Occupy Table
-                      </Button>
-                    </div>
-                  )}
-                  <div></div>
+                    )}
+
+                    <div></div>
+
+                    {tableDetail.status === "occupied" ? (
+                      <>
+                        <div className="bill-status">
+                          {`Billing status: ${tableDetail.billStatus}`}
+                        </div>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                 </div>
-                <Card.Footer>
-                        <div className="bill-status">{`billing status: ${tableDetail.billStatus}`}</div>
-                      </Card.Footer>
 
                 {/* <div>bill status: pending</div> */}
               </div>
             </Card.Body>
           </Card>
         ))}
+        {/* <div>Pending Payment</div>
+        <div>Total Earnings </div> */}
 
         <Modal
           show={modalShow}
@@ -170,9 +202,17 @@ function DashboardPage() {
               </InputGroup>
             </Modal.Body>
             <Modal.Footer>
+              {/* {selectedTable.billStatus === "pending" ? ( */}
+              {/* <> */}
               <Button onClick={handleOccupy}>Occupied</Button>
-
               <Button onClick={handleClose}>Close</Button>
+              {/* </> */}
+              {/* ) : (
+    <>
+      <Button onClick={handlePayBill}>Pay Bill</Button>
+      <Button onClick={handleClose}>Close</Button>
+    </>
+  )} */}
             </Modal.Footer>
           </div>
         </Modal>

@@ -15,5 +15,10 @@
   align-items: center;
   justify-content: center;
   font-size: 3rem;
+  background-image: linear-gradient(79deg, #fcfced, #fcedfc 48%,#ebf6ff); 
+}
+.App{
+  text-align: center;
+  background-image: linear-gradient(79deg, #fcfced, #fcedfc 48%,#ebf6ff); 
 }
 

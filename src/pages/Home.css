@@ -1,7 +1,7 @@
  .contain{
     background-color: white;
-    margin-left: 60px;
-    margin-top: 60px;
+    margin-left: 40px;
+    margin-top: 40px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -13,7 +13,7 @@
     /* display: flex; */
     flex-direction: column;
     justify-content: space-between;
-    
+    border-color: grey;
     margin-bottom: 20px;
     position: relative;
 }
@@ -27,11 +27,11 @@
 
 
 .add-item-btn{
-    height: 60px;
-    width: 90px;
+    height: 40px;
+    width: 80px;
     font-size: 11px;
-    font-weight: 550;
-    padding: 15px 30px;
+    font-weight: 600;
+    padding: 5px 10px;
     color: #000;
     background-color: #fff;
     border-radius: 4px;
@@ -66,7 +66,7 @@
 .contain-occupied{
     background-color: white;
     display: flex;
-    gap: 20px;
+    gap: 40px;
     flex-wrap: wrap;
     }
 
@@ -74,6 +74,7 @@
 .vacant-icon{
     display: flex;
     justify-content: space-between;
+    color: #fff;
 }
 
 .occupied-icon{
@@ -96,14 +97,18 @@
     display: flex;
     flex-direction: row;
     font-size: 15px;
-    gap: 10px;
+    font-weight: 600;
+    margin-top: 5px;
+    gap: 10px;color: #fff;
     
  }
 
+
+
  .add-occupy-btn {
-    height: 45px;
-    width: 150px;
-    font-size: 14px;
+    height: 40px;
+    width: 170px;
+    font-size: 15px;
     font-weight: 600;
     /* padding: 15px 30px; */
     color: #000;
@@ -120,3 +125,12 @@
     color:#fff;
  }
 
+ .table{
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+
+ }
+.card-contains{
+    margin:10px 20px;
+}
