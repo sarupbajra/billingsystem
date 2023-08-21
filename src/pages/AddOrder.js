@@ -3,6 +3,7 @@ import { tableDetailInfo, foodMenuItem } from "../utils/TableInfo";
 import { useNavigate, useParams } from "react-router-dom";
 import Quantity from "../component/Quantity";
 import "../pages/card.css";
+import { FaUpload } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import foodMenuSlice from "../redux/TableDetail/foodMenu.slice";
 import FoodItemsPage from "./FoodItemsPage";
@@ -15,12 +16,17 @@ import {
 } from "../redux/TableDetail/orderTable.slice";
 
 function AddOrderPage() {
+  const getLocalItems = () => {
+    const orderTable = localStorage.getItem("orderTables");
+    return orderTable ? JSON.parse(orderTable) : {};
+  };
+
   const [tables, setTables] = useState(tableDetailInfo);
   const { tableId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [foodMenuList, setFoodMenuList] = useState([]);
-  const [orderTables, setOrderTables] = useState({});
+  const [orderTables, setOrderTables] = useState(getLocalItems());
   const [newFoodName, setNewFoodName] = useState("");
   const [newFoodPrice, setNewFoodPrice] = useState(0);
   const orderData = useSelector((state) => state.foodMenu.orderTables);
@@ -31,41 +37,12 @@ function AddOrderPage() {
     ({ itemId }, index) => !ids.includes(itemId, index + 1)
   );
   console.log("filter", filtered);
-  const handleAddNewFoodItem = () => {
-    console.log("nnewfood", newFoodName);
-    if (newFoodName && newFoodPrice > 0) {
-      const newFoodItem = {
-        foodName: newFoodName,
-        price: newFoodPrice,
-        // Add other properties as needed
-      };
-
-      setFoodMenuList((prevFoodMenuList) => [...prevFoodMenuList, newFoodItem]);
-
-      // Clear input fields
-      setNewFoodName("");
-      setNewFoodPrice(0);
-    }
-  };
-  // const foodMenuStore = useSelector((state) => state.foodMenu.foodMenuItems);
-  // const menuItems = useSelector((state) => state.foodMenu.foodMenuItems);
-
-  // useEffect(() => {
-  //   console.log("tabababba", tableId);
-  // Load order data from local storage when the component mounts
-  //
-  //   dispatch(foodMenuSlice.actions.loadOrderTables());
-  // }, [dispatch]);
-  //   const storedOrderTables =
-  //     JSON.parse(localStorage.getItem("orderTables")) || {};
-  //   setOrderTables(storedOrderTables);
-  // }, []);
   useEffect(() => {
     // Save order data to local storage whenever it changes
     localStorage.setItem("orderTables", JSON.stringify(orderTables));
   }, [orderTables]);
-  //   dispatch(foodMenuSlice.actions.saveOrderTables(orderTables));
-  // }, [dispatch, orderTables]);
+  //   setOrderTables(getLocalItems());
+  // }, []);
 
   const handleRemoveItem = (tableId, index) => {
     setOrderTables((prevTables) => {
@@ -80,6 +57,33 @@ function AddOrderPage() {
     });
     dispatch(removeItem({ tableId, index }));
   };
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  // const handleUploadFileChange = async (e) => {
+  //   const selectedFile = e.target.files[0];
+
+  //   if (selectedFile) {
+  //     try {
+  //       const base64String = await convertBase64(selectedFile);
+  //       // Now you can use the base64String for your intended purpose
+  //       // For example, you can update the state or perform any other actions.
+  //     } catch (error) {
+  //       console.error("Error converting file to base64:", error);
+  //     }
+  //   }
+  // };
 
   const handleAddItem = (tableId, itemName, price, quantity) => {
     setOrderTables((prevTables) => {
@@ -164,11 +168,19 @@ function AddOrderPage() {
 
   return (
     <>
-      {/* <div>hello</div> */}
       <div className="table-heading">{`Table No: ${tableId}`} </div>
       <div className="cont">
         <div className="left">
           {/* <FoodItemsPage /> */}
+          {/* <FaUpload className="mr-1" /> Food
+          <input
+            type="file"
+            onChange={(e) => handleUploadFileChange(e)}
+            id="upload-photo"
+            name="photo"
+            className="form-control-file"
+            style={{ display: "none" }}
+          /> */}
           {foodMenuItem.map((foodItem, index) => (
             <div className="cardd" key={index}>
               <div className="imagee">
@@ -195,6 +207,9 @@ function AddOrderPage() {
         </div>
 
         <div className="right">
+          <div className="manage-item">
+            <Link to="/food-items">Manage Food Items</Link>
+          </div>
           <table className="item-table">
             <thead>
               <tr>
@@ -237,9 +252,9 @@ function AddOrderPage() {
                 <td colSpan="4">Total</td>
                 <td>{`Rs ${total(tableId)}`}</td>
                 <td></td>
-                {/* <td>
+                <td>
                   <button onClick={handleGenerateBill}>Generate Bill</button>
-                </td> */}
+                </td>
               </tr>
             </tfoot>
           </table>
@@ -261,7 +276,6 @@ function AddOrderPage() {
         />
         <button onClick={handleAddNewFoodItem}>Add Item</button>
       </div> */}
-      <Link to="/food-items">Manage Food Items</Link>
     </>
   );
 }

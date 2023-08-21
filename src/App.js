@@ -26,7 +26,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/addorder/:tableId" element={<AddOrderPage />} />
             <Route path="/food-items" element={<FoodItemsPage />} />
-            <Route path="/billing/:tableId" component={BillingPage} />
+            <Route path="/billing/:tableId" element={<BillingPage />} />
             <Route path="/foodMenu" element={<FoodMenu />} />
 
             {/* <Route path ='/order' element={<Order/>} /> */}

@@ -227,39 +227,17 @@
 
 .food-list li button {
   background-color: #dc3545;
+  /* display: flex; */
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin: 10px;
 }
 
-.food-items-container {
-  margin-bottom: 20px;
+.manage-item{
+  font-size: 18px;
 }
 
-.food-items-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
 
-.food-item-card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-  width: 150px;
-}
-
-.food-item-card img {
-  max-width: 100%;
-  height: auto;
-}
-
-.food-item-card h3 {
-  margin: 10px 0;
-}
-
-.food-item-card p {
-  margin: 5px 0;
-}
 

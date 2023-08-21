@@ -5,14 +5,15 @@ import { useParams } from "react-router-dom";
 
 const BillingPage = () => {
   const { tableId } = useParams();
-  const [billData, setBillData] = useState([]);
+  const billData =
+    JSON.parse(localStorage.getItem(`billData_${tableId}`)) || [];
 
-  useEffect(() => {
-    // Load the order data for the current table from local storage when the component mounts
-    const storedBillData =
-      JSON.parse(localStorage.getItem(`billData_${tableId}`)) || [];
-    setBillData(storedBillData);
-  }, [tableId]);
+  // useEffect(() => {
+  //   // Load the order data for the current table from local storage when the component mounts
+  //   const storedBillData =
+  //     JSON.parse(localStorage.getItem(`billData_${tableId}`)) || [];
+  //   setBillData(storedBillData);
+  // }, [tableId]);
 
   // Calculate the total cost for the bill
   const total = billData.reduce((acc, item) => acc + item.cost, 0);

@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { addMenuItem } from "../redux/TableDetail/foodMenu.slice";
+// import { useDispatch } from "react-redux";
+// import { addMenuItem } from "../redux/TableDetail/foodMenu.slice";
 
 function AddFoodModal({ show, onHide }) {
   // const dispatch = useDispatch();

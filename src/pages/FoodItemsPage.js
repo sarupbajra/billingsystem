@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addFoodItem } from "../redux/foodMenu.slice"; // Adjust the path
+// import { addFoodItem } from "../redux/foodMenu.slice"; // Adjust the path
 
 function FoodItemsPage() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [foodItems, setFoodItems] = useState([]);
   const [newFoodName, setNewFoodName] = useState("");
   const [newFoodPrice, setNewFoodPrice] = useState(0);
@@ -15,7 +14,7 @@ function FoodItemsPage() {
         foodName: newFoodName,
         price: newFoodPrice,
       };
-      //   dispatch(addFoodItem(newFoodItem));
+
       setFoodItems((prevFoodItems) => [...prevFoodItems, newFoodItem]);
 
       // Clear input fields
@@ -54,10 +53,12 @@ function FoodItemsPage() {
         <ul>
           {foodItems.map((item) => (
             <li key={item.id}>
-              {item.foodName} - Rs {item.price}{" "}
-              <button onClick={() => handleDeleteFoodItem(item.id)}>
-                Delete
-              </button>
+              {item.foodName} - Rs {item.price}
+              <>
+                <button onClick={() => handleDeleteFoodItem(item.id)}>
+                  Delete
+                </button>
+              </>
             </li>
           ))}
         </ul>
