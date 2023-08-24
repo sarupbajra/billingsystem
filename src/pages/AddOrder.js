@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { tableDetailInfo, foodMenuItem } from "../utils/TableInfo";
 import { useNavigate, useParams } from "react-router-dom";
 import Quantity from "../component/Quantity";
@@ -14,23 +14,32 @@ import {
   removeItem,
   updateQuantity,
 } from "../redux/TableDetail/orderTable.slice";
+import FoodItemCard from "../component/FoodItemCard";
+// import UploadAndDisplayImage from "../component/imageUpload";
 
 function AddOrderPage() {
+  const foodItemsList = JSON.parse(localStorage.getItem("foodItemsList")) || [];
   const getLocalItems = () => {
     const orderTable = localStorage.getItem("orderTables");
     return orderTable ? JSON.parse(orderTable) : {};
   };
-
+  const menuList = JSON.parse(localStorage.getItem("menuList") || "[]");
+  const getFoodItemFromMenuList = JSON.parse(
+    localStorage.getItem("foodItems") || "[]"
+  );
   const [tables, setTables] = useState(tableDetailInfo);
   const { tableId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
   const [foodMenuList, setFoodMenuList] = useState([]);
   const [orderTables, setOrderTables] = useState(getLocalItems());
   const [newFoodName, setNewFoodName] = useState("");
   const [newFoodPrice, setNewFoodPrice] = useState(0);
-  const orderData = useSelector((state) => state.foodMenu.orderTables);
+  const [image, setImage] = useState();
 
+  const orderData = useSelector((state) => state.foodMenu.orderTables);
+  const [foodItems, setFoodItems] = useState(getLocalItems());
   console.log("newwewew", tableId, orderData);
   const ids = orderTables[tableId]?.items.map(({ itemId }) => itemId);
   const filtered = orderTables[tableId]?.items.filter(
@@ -38,12 +47,23 @@ function AddOrderPage() {
   );
   console.log("filter", filtered);
   useEffect(() => {
-    // Save order data to local storage whenever it changes
-    localStorage.setItem("orderTables", JSON.stringify(orderTables));
+    //   // Save order data to local storage whenever it changes
+    //   localStorage.setItem("orderTables", JSON.stringify(orderTables));
+    //   const getFoodItemFromMenuList =
+    //     JSON.parse(localStorage.getItem("foodItems")) || [];
+    const menuList = JSON.parse(localStorage.getItem("menuList")) || [];
+    const getFoodItemFromMenuList = getLocalItems();
+    //  const menuList = localStorage.getItem("foodItems");
+
+    //   console.log("menulist", menuList);
   }, [orderTables]);
   //   setOrderTables(getLocalItems());
   // }, []);
-
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    console.log(file);
+    setImage(event.target.files[0]);
+  };
   const handleRemoveItem = (tableId, index) => {
     setOrderTables((prevTables) => {
       const updatedTable = {
@@ -56,6 +76,22 @@ function AddOrderPage() {
       };
     });
     dispatch(removeItem({ tableId, index }));
+  };
+  const handleAddFoodItem = (foodItem) => {
+    // setSelectedItems((prevSelectedItems) => [...prevSelectedItems, foodItem]);
+    if (newFoodName && newFoodPrice > 0) {
+      const newFoodItem = {
+        id: Date.now(), // Generate a unique ID (you can use a library for better IDs)
+        foodName: newFoodName,
+        price: newFoodPrice,
+      };
+
+      setFoodItems((prevFoodItems) => [...prevFoodItems, newFoodItem]);
+
+      // Clear input fields
+      setNewFoodName("");
+      setNewFoodPrice(0);
+    }
   };
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -165,32 +201,48 @@ function AddOrderPage() {
     orderTables[tableId]?.items.reduce((acc, item) => acc + item.cost, 0) || 0;
   // const total = orderData.reduce((acc, item) => acc + item.price, 0) || 0;
   console.log("total", orderData);
+  const handleImageClick = () => {
+    inputRef.current.click();
+  };
 
   return (
     <>
       <div className="table-heading">{`Table No: ${tableId}`} </div>
       <div className="cont">
         <div className="left">
-          {/* <FoodItemsPage /> */}
-          {/* <FaUpload className="mr-1" /> Food
-          <input
-            type="file"
-            onChange={(e) => handleUploadFileChange(e)}
-            id="upload-photo"
-            name="photo"
-            className="form-control-file"
-            style={{ display: "none" }}
-          /> */}
-          {foodMenuItem.map((foodItem, index) => (
+          {getFoodItemFromMenuList.map((foodItem, index) => (
             <div className="cardd" key={index}>
               <div className="imagee">
-                <img
-                  src={foodItem.src}
+                {/* <img
+                  // src={foodItem.src}
+                  src={UploadAndDisplayImage}
                   height="100px"
                   width="100px"
                   alt={foodItem.name}
-                />
+                /> */}
+
+                <div onClick={() => handleImageClick()}>
+                  {image ? (
+                    <img src={URL.createObjectURL(image)} alt="menuItem.name" />
+                  ) : (
+                    <img
+                      src="foodItem.src"
+                      height="100px"
+                      width="100px"
+                      alt="menuItem.name"
+                    />
+                  )}
+
+                  <input
+                    type="file"
+                    ref={inputRef}
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                    alt=""
+                  />
+                </div>
               </div>
+
               <h3>{foodItem.foodName}</h3>
               <h3>Rs {foodItem.price}</h3>
 
@@ -198,6 +250,36 @@ function AddOrderPage() {
                 className="item-add"
                 onClick={() =>
                   handleAddItem(tableId, foodItem.foodName, foodItem.price, 1)
+                }
+              >
+                Add
+              </button>
+            </div>
+          ))}
+          {menuList.map((menuItem, index) => (
+            <div className="cardd" key={index}>
+              {/* Render menu item details */}
+              <div className="imagee">
+                <div onClick={handleImageClick}>
+                  <img src={menuItem.src} alt="menuItem.name" />
+                  <input type="file" ref={inputRef} />
+                </div>
+                {/* <img
+                  // src={menuItem.imageSrc}
+                  src={UploadAndDisplayImage}
+                  height="100px"
+                  width="100px"
+                  alt={menuItem.name}
+                /> */}
+              </div>
+              <h3>{menuItem.name}</h3>
+              <h3>Rs {menuItem.price}</h3>
+
+              {/* Add button to add the menu item to the order */}
+              <button
+                className="item-add"
+                onClick={() =>
+                  handleAddItem(tableId, menuItem.name, menuItem.price, 1)
                 }
               >
                 Add
