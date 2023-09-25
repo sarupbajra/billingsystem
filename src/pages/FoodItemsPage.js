@@ -2,8 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 // import { addFoodItem } from "../redux/foodMenu.slice"; // Adjust the path
 import FoodItemCard from "../component/FoodItemCard";
 import { FaUpload } from "react-icons/fa";
+import { AiOutlineConsoleSql } from "react-icons/ai";
+import * as AiIcons from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import "./card.css";
 function FoodItemsPage() {
   // const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const getLocalItems = () => {
     const foodItem = localStorage.getItem("foodItems");
@@ -11,11 +16,11 @@ function FoodItemsPage() {
   };
   const [foodItems, setFoodItems] = useState(getLocalItems());
   const [newFoodName, setNewFoodName] = useState("");
-  const [newFoodPrice, setNewFoodPrice] = useState(0);
+  const [newFoodPrice, setNewFoodPrice] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [editingItemId, setEditingItemId] = useState(null);
   const [editedFoodName, setEditedFoodName] = useState("");
-  const [editedFoodPrice, setEditedFoodPrice] = useState(0);
+  const [editedFoodPrice, setEditedFoodPrice] = useState("");
   const [editedImage, setEditedImage] = useState(null);
   const [image, setImage] = useState();
   const inputRef = useRef(null);
@@ -37,14 +42,14 @@ function FoodItemsPage() {
         id: Date.now(), // Generate a unique ID (you can use a library for better IDs)
         foodName: newFoodName,
         price: newFoodPrice,
-        image: newImage,
+        image: image,
       };
-
+      console.log("newimageee", newImage);
       setFoodItems((prevFoodItems) => [...prevFoodItems, newFoodItem]);
 
       // Clear input fields
       setNewFoodName("");
-      setNewFoodPrice(0);
+      setNewFoodPrice("");
       setNewImage(null);
     }
   };
@@ -62,6 +67,18 @@ function FoodItemsPage() {
   // const handleImageClick = () => {
   //   inputRef.current.click();
   // };
+
+  const handleAddToOrder = (selectedItem) => {
+    setSelectedItems((prevSelectedItems) => [
+      ...prevSelectedItems,
+      selectedItem,
+    ]);
+  };
+
+  const handleGoToAddOrderPage = () => {
+    // console.log("tableIdd", tableId);
+    navigate(`/add-order/1`, { state: { selectedItems } });
+  };
   const handleUploadFileChange = async (e) => {
     const file = e.target.files[0];
     const image = await convertBase64(file);
@@ -115,31 +132,54 @@ function FoodItemsPage() {
     cancelEdit();
   };
   return (
-    <div className="add-food-item">
-      <h2>Manage Food Items</h2>
-      <div>
-        <h3>Add New Food Item</h3>
+    <>
+      <div className="add-food-item">
+        <h2>Manage Food Items</h2>
+        <div>
+          <h3>Add New Food Item</h3>
+          {/* <FaUpload className="mr-1" />  */}
+          <input
+            type="file"
+            onChange={(e) => handleUploadFileChange(e)}
+            id="upload-photo"
+            name="photo"
+            className="form-control-file"
+            // style={{ display: "none" }}
+          />
+          <input
+            type="text"
+            placeholder="Food Name"
+            value={newFoodName}
+            onChange={(e) => setNewFoodName(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            value={newFoodPrice}
+            onChange={(e) => setNewFoodPrice(parseFloat(e.target.value))}
+          />
+          <button onClick={() => handleAddFoodItem()}>Add Item</button>
+        </div>
+        <div className="food-list">
+          <h3>Food Items List</h3>
+          <ul>
+            {foodItems.map((item) => (
+              <li className="food-item" key={item.id}>
+                <div>
+                  {/* Render food items */}
+                  {/* {foodItems.map((item) => ( */}
+                  {/* <div key={item.id}> */}
+                  {/* <h3>{item.foodName}</h3> */}
+                  {/* <button onClick={() => handleAddToOrder(item)}>
+                      Add to Order
+                    </button> */}
+                </div>
 
-        <input
-          type="text"
-          placeholder="Food Name"
-          value={newFoodName}
-          onChange={(e) => setNewFoodName(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Price"
-          value={newFoodPrice}
-          onChange={(e) => setNewFoodPrice(parseFloat(e.target.value))}
-        />
-        <button onClick={() => handleAddFoodItem()}>Add Item</button>
-      </div>
-      <div className="food-list">
-        <h3>Food Items List</h3>
-        <ul>
-          {foodItems.map((item) => (
-            <li key={item.id}>
-              {/* <div onClick={() => handleImageClick()}>
+                {/* <button onClick={handleGoToAddOrderPage}>
+                    Go to Add Order
+                  </button> */}
+                {/* </div> */}
+                {/* <div onClick={() => handleImageClick()}>
                 {image ? (
                   <img src={URL.createObjectURL(image)} alt="menuItem.name" />
                 ) : (
@@ -151,42 +191,48 @@ function FoodItemsPage() {
                   />
                 )}
               </div> */}
-              <img
-                src={image}
-                alt="Uploaded"
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  borderRadius: "50%",
-                }}
-              />
-              <FaUpload className="mr-1" /> Update Image
-              <input
-                type="file"
-                onChange={(e) => handleUploadFileChange(e)}
-                id="upload-photo"
-                name="photo"
-                className="form-control-file"
-                // style={{ display: "none" }}
-              />
-              {editingItemId === item.id ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder="Food Name"
-                    value={editedFoodName}
-                    onChange={(e) => setEditedFoodName(e.target.value)}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Price"
-                    value={editedFoodPrice}
-                    onChange={(e) =>
-                      setEditedFoodPrice(parseFloat(e.target.value))
-                    }
-                  />
 
-                  <input
+                {editingItemId === item.id ? (
+                  <>
+                    <img
+                      src={item.image}
+                      alt="Uploaded"
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "50%",
+                      }}
+                      className="food-item-image"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Food Name"
+                      value={editedFoodName}
+                      onChange={(e) => setEditedFoodName(e.target.value)}
+                    />
+                    <input
+                      type="number"
+                      placeholder="Price"
+                      value={editedFoodPrice}
+                      onChange={(e) =>
+                        setEditedFoodPrice(parseFloat(e.target.value))
+                      }
+                    />
+                    {/* <img
+                    src={
+                      editedImage
+                        ? URL.createObjectURL(editedImage)
+                        : editedImage || item.image
+                    }
+                    alt="Uploaded"
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      borderRadius: "50%",
+                    }}
+                  /> */}
+
+                    {/* <input
                     type="file"
                     ref={inputRef}
                     onChange={(e) => {
@@ -194,28 +240,84 @@ function FoodItemsPage() {
                       setEditedImage(e.target.files[0]);
                     }}
                     // style={{ display: "none" }}
-                  />
+                  /> */}
+                    <img
+                      // src={
+                      //   editingItemId === item.id
+                      //     ? editedImage || item.image
+                      //     : item.image
+                      // }
+                      src={item.image}
+                      alt="Uploaded"
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "50%",
+                        display: "none",
+                      }}
+                    />
 
-                  <button onClick={() => handleEditFoodItem(item.id)}>
-                    Save
-                  </button>
-                  <button onClick={() => cancelEdit()}>Cancel</button>
-                </>
-              ) : (
-                <>
-                  {item.foodName} - Rs {item.price}
-                  <div>
-                    <button onClick={() => handleDeleteFoodItem(item.id)}>
-                      Delete
+                    <input
+                      type="file"
+                      ref={inputRef}
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        const image = await convertBase64(file);
+                        setEditedImage(image);
+                      }}
+                    />
+
+                    <button onClick={() => handleEditFoodItem(item.id)}>
+                      Save
                     </button>
-                    <button onClick={() => startEdit(item)}>Edit</button>
-                  </div>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-        {/* 
+                    <button onClick={() => cancelEdit()}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src={item.image}
+                      alt="Uploaded"
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                    <div className="food-item-details">
+                      <div className="food-item-name">{item.foodName}</div>
+                      <div className="food-item-price">Rs {item.price}</div>
+                    </div>
+                    {/* {item.foodName} - Rs {item.price} */}
+                    <div>
+                      <button>
+                        <AiIcons.AiOutlineCheckCircle />
+                      </button>
+                    </div>
+
+                    <div className="">
+                      {/* <div className="edit-button"> */}
+                      <button
+                        onClick={() => startEdit(item)}
+                        className="edit-button"
+                      >
+                        <AiIcons.AiOutlineEdit />
+                      </button>
+                    </div>
+                    {/* <div className="delete-buttons"> */}
+                    <button
+                      onClick={() => handleDeleteFoodItem(item.id)}
+                      className="delete-button"
+                    >
+                      <AiIcons.AiOutlineDelete />
+                    </button>
+                    {/* </div> */}
+                    {/* </div> */}
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+          {/* 
         {foodItems.map((item) => (
           <FoodItemCard
             key={item.id}
@@ -224,8 +326,9 @@ function FoodItemsPage() {
           />
         ))}
         <button>add</button> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

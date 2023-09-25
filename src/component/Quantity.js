@@ -24,12 +24,20 @@ export default function Quantity({ value, onChange }) {
 
   return (
     <div className="quantity-container">
-      <div className="quantity-button">
-        <MainButton title="+" onClick={handleIncrement} />
+      <div className="">
+        <MainButton
+          className="quantity-button"
+          title="+"
+          onClick={handleIncrement}
+        />
       </div>
       <div className="quantity-value">{value}</div>
-      <div className="quantity-button">
-        <MainButton title="-" onClick={handleDecrement} />
+      <div className="">
+        <MainButton
+          title="-"
+          onClick={handleDecrement}
+          className="quantity-button"
+        />
       </div>
     </div>
   );

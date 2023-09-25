@@ -4,7 +4,10 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { tableDetailSlice } from "../redux/TableDetail/tabledetail.slice";
+import {
+  tableDetailSlice,
+  updateTableDetail,
+} from "../redux/TableDetail/tabledetail.slice";
 import InputGroup from "react-bootstrap/InputGroup";
 import { tableDetailInfo } from "../utils/TableInfo";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +24,13 @@ function DashboardPage() {
     (state) => state.tableDetail.tableDetailInfo
   );
   // const tableNumbers= [1,2,3,4];
+
+  const [viewModalShow, setViewModalShow] = useState(false); // Modal for viewing table info
+  const [selectedTableByUser, setSelectedTableByUser] = useState();
+  const [isBillPaid, setIsBillPaid] = useState(false);
+  const [isBillPending, setIsBillPending] = React.useState(false);
+  const [occupyModalShow, setOccupyModalShow] = useState(false); // Modal for occupation
+  const [pendingModalShow, setPendingModalShow] = useState(false); // Modal for pending bill
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [selectedCard, setSelectedCard] = useState();
@@ -29,6 +39,7 @@ function DashboardPage() {
   const [tableDetailList, setTableDetailList] = useState([]);
   // const tableList =useSelector ((state) => state.table);
   // const dispatch = useDispatch();
+
   useEffect(() => {
     tableDetailInfo.tableNo = `tableDetail ${paxNumber}`;
     setTableDetailList(tableDetailInfo);
@@ -36,19 +47,14 @@ function DashboardPage() {
 
   const handleClose = () => setShow(false);
 
-  const handleShow = (card) => {
-    setSelectedTable(card);
-    // dispatch(selectedTable(card))
-    setSelectedCard(card);
-    // dispatch(selectedTable(card))
-    setShow(true);
-    setModalShow(true);
-  };
+  //   setShow(true);
+  //   setModalShow(true);
+  // };
   const handleAddOrder = (tableNo) => {
     navigate(`/addorder/${tableNo}`);
   };
 
-  const handleOccupy = () => {
+  const handleOccupy = (tableNo) => {
     console.log("tabledetail", tableDetailStore);
     const updatedTableList = tableDetailStore.map((table) =>
       table.tableNo === selectedTable.tableNo
@@ -61,22 +67,54 @@ function DashboardPage() {
         : table
     );
     dispatch(tableDetailSlice.actions.updateTableDetail(updatedTableList));
-    // setTableDetailList(tableDetailStore);
-    setModalShow(false);
+
+    setOccupyModalShow(false);
   };
-  const handlePayBill = () => {
-    const updatedTableList = tableDetailStore.map((table) =>
-      table.tableNo === selectedTable.tableNo
-        ? {
-            ...table,
-            status: "vacant",
-            pax: 0,
-            billStatus: "paid",
-          }
-        : table
-    );
-    dispatch(tableDetailSlice.actions.updateTableDetail(updatedTableList));
-    setModalShow(false);
+  const handlePending = (tableNo) => {
+    setModalShow(true);
+    setPendingModalShow(true);
+    setIsBillPending(true);
+    setSelectedTableByUser(tableNo);
+  };
+
+  const handlePayBill = (tableNo) => {
+    if (selectedTable) {
+      const updatedTableList = tableDetailStore.map((table) =>
+        table.tableNo === selectedTable
+          ? {
+              ...table,
+              status: "vacant",
+              pax: 0,
+              billStatus: "paid",
+            }
+          : table
+      );
+
+      dispatch(tableDetailSlice.actions.updateTableDetail(updatedTableList));
+      setPendingModalShow(false);
+      setIsBillPaid(true);
+      setIsBillPending(false);
+    } else {
+      // Handle the case where selectedTable is undefined
+      console.error("selectedTable is undefined");
+    }
+  };
+  const handleShow = (tableDetail) => {
+    setSelectedTable(tableDetail);
+    // dispatch(selectedTable(card))
+    // setSelectedCard(card);
+    // dispatch(selectedTable(card))
+    // Use the appropriate state variable to show the desired modal
+    if (tableDetail.status === "occupied") {
+      setPendingModalShow(true);
+    } else {
+      setOccupyModalShow(true);
+    }
+  };
+
+  const handleView = (table) => {
+    setSelectedTable(table);
+    setViewModalShow(true); // Show the "View" modal
   };
 
   return (
@@ -137,7 +175,7 @@ function DashboardPage() {
                           </Button>
                           <Button
                             className="add-item-btn"
-                            onClick={() => handleShow(tableDetail)}
+                            onClick={() => handleView(tableDetail)}
                           >
                             View
                           </Button>
@@ -154,16 +192,25 @@ function DashboardPage() {
                       </div>
                     )}
 
-                    <div></div>
+                    {/* <div></div> */}
 
                     {tableDetail.status === "occupied" ? (
                       <>
                         <div className="bill-status">
-                          {`Billing status: ${tableDetail.billStatus}`}
+                          {/* {`Billing status: ${tableDetail.billStatus}`} */}
+                          Bill status:{" "}
+                          {
+                            <button
+                              className="pending-button"
+                              onClick={() => handlePending(tableDetail.tableNo)}
+                            >
+                              Pending
+                            </button>
+                          }
                         </div>
                       </>
                     ) : (
-                      <></>
+                      <> </>
                     )}
                   </div>
                 </div>
@@ -177,8 +224,28 @@ function DashboardPage() {
         <div>Total Earnings </div> */}
 
         <Modal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
+          show={pendingModalShow}
+          onHide={() => setPendingModalShow(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Pending Bill</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {isBillPending ? (
+              <p>Are you sure you want to mark the bill as paid?</p>
+            ) : (
+              <p>Invalid action. Bill is not pending.</p>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            {isBillPending && <Button onClick={handlePayBill}>Pay Bill</Button>}
+            <Button onClick={() => setModalShow(false)}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={occupyModalShow}
+          onHide={() => setOccupyModalShow(false)}
           size="sm"
           aria-labelledby="contained-modal-title-vcenter"
           centered
@@ -206,15 +273,27 @@ function DashboardPage() {
               {/* <> */}
               <Button onClick={handleOccupy}>Occupied</Button>
               <Button onClick={handleClose}>Close</Button>
-              {/* </> */}
-              {/* ) : (
-    <>
-      <Button onClick={handlePayBill}>Pay Bill</Button>
-      <Button onClick={handleClose}>Close</Button>
-    </>
-  )} */}
             </Modal.Footer>
           </div>
+        </Modal>
+        <Modal show={viewModalShow} onHide={() => setViewModalShow(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Table Information</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedTable && (
+              <div>
+                <p>Table Number: {selectedTable.tableNo}</p>
+                <p>Status: {selectedTable.status}</p>
+                {selectedTable.status === "occupied" && (
+                  <p>Number of Pax: {selectedTable.pax}</p>
+                )}
+              </div>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setViewModalShow(false)}>Close</Button>
+          </Modal.Footer>
         </Modal>
       </div>
     </div>

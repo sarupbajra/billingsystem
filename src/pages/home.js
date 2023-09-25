@@ -3,7 +3,7 @@ import { Login } from "./login";
 import Register from "./Register";
 import { useState } from "react";
 export default function Home() {
-  const [currentForm, setCurrentForm] = useState();
+  const [currentForm, setCurrentForm] = useState("login");
 
   const toggleForm = (formName) => {
     setCurrentForm(formName);

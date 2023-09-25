@@ -2,7 +2,7 @@
 .cont {
     display: flex;
     justify-content: space-between;
-    margin: 20px;
+    margin: 10px;
     background-color:  #ffff;
     
   }
@@ -64,6 +64,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    color: #dc3545;
   }
   
   .item-table th,
@@ -136,34 +137,21 @@
     
   }
 
-  .quantity-btn{
+  /* .quantity-btn{
     display: flex;
     flex-direction: column;
-  }
+  } */
 
   /* Quantity.css */
 
 .quantity-container {
   display: flex;
   align-items: center;
-} */
-
- .quantity-button {
-  font-size: 18px; 
-  /* background-color: #f0f0f0;  */
-   /* border: 1px solid #ccc; */
-  height: 40px; 
-  width: 30px; 
-  padding: 6px 12px;
-  padding-right: 24px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
 } 
 
- .quantity-button:hover {
-  background-color: #fff; 
-  color: #fff;
-} 
+ 
+
+
 
 .quantity-value {
   font-size: 18px;
@@ -174,15 +162,15 @@
 
 /* FoodItemsPage.css */
 
-.add-food-item {
+ /* .add-food-item {
   margin-top: 30px;
   margin-left: 50px;
   margin-right: 100px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc; 
   border-radius: 5px;
-  background-color: #f7f7f7;
-}
+  background-color: #f7f7f7; 
+}  */
 
 .add-food-item h3 {
   margin-bottom: 10px;
@@ -206,38 +194,191 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
+} 
 
 .food-list {
-  margin: 10px;
+  margin: 20px;
   list-style: none;
   padding: 0;
 }
 
 .food-list li {
-  display: flex;
+   display: flex; 
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ccc;
   margin-bottom: 10px;
   border-radius: 5px;
   color: #0056b3;
-}
+}  
 
-.food-list li button {
-  background-color: #dc3545;
-  /* display: flex; */
+ .food-list li button {
+  background-color: #dc3545;  
+   display: flex; 
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin: 10px;
-}
+}   
 
 .manage-item{
   font-size: 18px;
 }
 
+.food-item-details {
+  flex: 1;
+}
 
+.food-item-name {
+  font-size: 18px;
+  font-weight: bold;
+}
 
+.food-item-price {
+  font-size: 16px;
+  color: #888;
+}
+
+.food-item img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+/* .edit-buttons {
+  display: flex;
+  align-items: center;
+} */
+
+   /* .edit-button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;  */
+  /* color: white; */
+  /* border-radius: 5px;
+  cursor: pointer;
+} */
+
+ /* .delete-buttons {
+  padding: 5px 10px;
+  border: none;
+  background-color: #ff4d4f; */
+  /* color: white; */
+   /* border-radius: 5px;
+  cursor: pointer;
+}     */
+.pay-the-bill {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  
+} 
+.bill-table {
+  /* text-align: center; */
+  /* margin-top: 40px;
+  margin-left: 200px;
+  margin-right: 200px; */
+  padding: 40px;
+}
+.form__container {
+  min-height: 100vh;
+  background: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
+}
+.form__container form {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  padding: 20px;
+}
+.form__heading {
+  font-family: "Dancing Script", cursive;
+  margin-bottom: 10px;
+}
+.form__button {
+  width: 100%;
+  background-color: black;
+  color: white;
+  padding: 5px;
+}
+.form__button:hover {
+  background-color: rgba(0, 0, 0, 0.795);
+}
+.form__submit-btn {
+  margin-top: 20px;
+  width: 100%;
+  color: white;
+  background-color: black;
+  padding: 10px 0px;
+}
+.form__submit-btn:hover {
+  opacity: 0.9;
+}
+.content {
+  min-height: 73vh !important;
+}
+
+.pending-button {
+  background-color: transparent; 
+  color: #000; 
+  padding: 10px 20px; 
+  border: 2px solid #000; 
+  border-image-source: linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%); 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+.pending-button:hover {
+  background-color: rgba(0, 0, 0, 0.1); 
+  color: #333; 
+}
+
+.generate-bill-button {
+  background-color: #4caf50; /* Green background color */
+  color: #fff; /* White text color */
+  padding: 10px 20px; /* Padding around the text */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Cursor style on hover */
+  font-size: 16px; /* Font size */
+}
+
+.generate-bill-button:hover {
+  background-color: #45a049; /* Darker green background on hover */
+}
+.quantity-button {
+  background-color: #007bff; /* Blue background color */
+  color: #fff; /* White text color */
+  padding: 8px 16px; /* Padding around the text */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Cursor style on hover */
+  font-size: 14px; /* Font size */
+}
+
+.quantity-button:hover {
+  background-color: #0056b3; /* Darker blue background on hover */
+}
+
+.edit-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Delete button styles */
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}

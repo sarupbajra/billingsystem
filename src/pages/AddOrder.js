@@ -9,6 +9,7 @@ import foodMenuSlice from "../redux/TableDetail/foodMenu.slice";
 import FoodItemsPage from "./FoodItemsPage";
 import { Link } from "react-router-dom";
 import { addFoodItem } from "../redux/foodMenu.slice";
+import { useLocation } from "react-router-dom";
 import {
   addItem,
   removeItem,
@@ -18,6 +19,9 @@ import FoodItemCard from "../component/FoodItemCard";
 // import UploadAndDisplayImage from "../component/imageUpload";
 
 function AddOrderPage() {
+  const location = useLocation();
+  const selectedItems = location.state?.selectedItems || [];
+  const selectedImage = localStorage.getItem("selectedImage");
   const foodItemsList = JSON.parse(localStorage.getItem("foodItemsList")) || [];
   const getLocalItems = () => {
     const orderTable = localStorage.getItem("orderTables");
@@ -77,49 +81,6 @@ function AddOrderPage() {
     });
     dispatch(removeItem({ tableId, index }));
   };
-  const handleAddFoodItem = (foodItem) => {
-    // setSelectedItems((prevSelectedItems) => [...prevSelectedItems, foodItem]);
-    if (newFoodName && newFoodPrice > 0) {
-      const newFoodItem = {
-        id: Date.now(), // Generate a unique ID (you can use a library for better IDs)
-        foodName: newFoodName,
-        price: newFoodPrice,
-      };
-
-      setFoodItems((prevFoodItems) => [...prevFoodItems, newFoodItem]);
-
-      // Clear input fields
-      setNewFoodName("");
-      setNewFoodPrice(0);
-    }
-  };
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  // const handleUploadFileChange = async (e) => {
-  //   const selectedFile = e.target.files[0];
-
-  //   if (selectedFile) {
-  //     try {
-  //       const base64String = await convertBase64(selectedFile);
-  //       // Now you can use the base64String for your intended purpose
-  //       // For example, you can update the state or perform any other actions.
-  //     } catch (error) {
-  //       console.error("Error converting file to base64:", error);
-  //     }
-  //   }
-  // };
 
   const handleAddItem = (tableId, itemName, price, quantity) => {
     setOrderTables((prevTables) => {
@@ -150,9 +111,14 @@ function AddOrderPage() {
           price,
           quantity,
           cost: price * quantity,
+          image,
         };
         const updatedItems = [...tableData.items, newItem];
         const updatedTable = { ...tableData, items: updatedItems };
+
+        const updatedOrderTables = { ...prevTables, [tableId]: updatedTable };
+        localStorage.setItem("orderTables", JSON.stringify(updatedOrderTables));
+
         // Dispatch the addItem action with relevant payload
         dispatch(
           addItem({
@@ -208,39 +174,32 @@ function AddOrderPage() {
   return (
     <>
       <div className="table-heading">{`Table No: ${tableId}`} </div>
+
       <div className="cont">
         <div className="left">
+          <ul>
+            {selectedItems.map((item) => (
+              <li key={item.id}>
+                <h3>{item.foodName}</h3>
+                <p>Price: Rs {item.price}</p>
+                {/* You can also display the image if needed */}
+                <img src={item.image} alt={item.foodName} />
+              </li>
+            ))}
+          </ul>
+
           {getFoodItemFromMenuList.map((foodItem, index) => (
             <div className="cardd" key={index}>
               <div className="imagee">
-                {/* <img
-                  // src={foodItem.src}
-                  src={UploadAndDisplayImage}
-                  height="100px"
-                  width="100px"
-                  alt={foodItem.name}
-                /> */}
-
-                <div onClick={() => handleImageClick()}>
-                  {image ? (
-                    <img src={URL.createObjectURL(image)} alt="menuItem.name" />
-                  ) : (
-                    <img
-                      src="foodItem.src"
-                      height="100px"
-                      width="100px"
-                      alt="menuItem.name"
-                    />
-                  )}
-
-                  <input
-                    type="file"
-                    ref={inputRef}
-                    onChange={handleImageChange}
-                    style={{ display: "none" }}
-                    alt=""
-                  />
-                </div>
+                <img
+                  src={foodItem.image} // Use the image from the food item
+                  alt={foodItem.foodName}
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "50%",
+                  }}
+                />
               </div>
 
               <h3>{foodItem.foodName}</h3>
@@ -249,37 +208,13 @@ function AddOrderPage() {
               <button
                 className="item-add"
                 onClick={() =>
-                  handleAddItem(tableId, foodItem.foodName, foodItem.price, 1)
-                }
-              >
-                Add
-              </button>
-            </div>
-          ))}
-          {menuList.map((menuItem, index) => (
-            <div className="cardd" key={index}>
-              {/* Render menu item details */}
-              <div className="imagee">
-                <div onClick={handleImageClick}>
-                  <img src={menuItem.src} alt="menuItem.name" />
-                  <input type="file" ref={inputRef} />
-                </div>
-                {/* <img
-                  // src={menuItem.imageSrc}
-                  src={UploadAndDisplayImage}
-                  height="100px"
-                  width="100px"
-                  alt={menuItem.name}
-                /> */}
-              </div>
-              <h3>{menuItem.name}</h3>
-              <h3>Rs {menuItem.price}</h3>
-
-              {/* Add button to add the menu item to the order */}
-              <button
-                className="item-add"
-                onClick={() =>
-                  handleAddItem(tableId, menuItem.name, menuItem.price, 1)
+                  handleAddItem(
+                    tableId,
+                    foodItem.foodName,
+                    foodItem.price,
+                    1,
+                    foodItem.image
+                  )
                 }
               >
                 Add
@@ -287,6 +222,50 @@ function AddOrderPage() {
             </div>
           ))}
         </div>
+        {/* {menuList.map((menuItem, index) => (
+            <div className="cardd" key={index}> */}
+        {/* Render menu item details */}
+        {/* <div className="imagee">
+                <div onClick={handleImageClick}>
+                  <img src={menuItem.src} alt="menuItem.name" />
+                  <input type="file" ref={inputRef} />
+                </div> */}
+        {/* <img
+                  // src={menuItem.imageSrc}
+                  src={UploadAndDisplayImage}
+                  height="100px"
+                  width="100px"
+                  alt={menuItem.name}
+                /> */}
+        {/* </div> */}
+
+        {/* <h3>{menuItem.name}</h3>
+              <h3>Rs {menuItem.price}</h3> */}
+        {/* <div>
+              <h2>Selected Food Items</h2>
+              <ul>
+                {selectedItems.map((item) => (
+                  <li key={item.id}>
+                    <h3>{item.foodName}</h3>
+                    <p>Price: Rs {item.price}</p> */}
+        {/* You can also display the image if needed */}
+        {/* <img src={item.image} alt={item.foodName} />
+                  </li>
+                ))}
+              </ul>
+            </div> */}
+        {/* Add button to add the menu item to the order */}
+        {/* <button
+              className="item-add"
+              onClick={() =>
+                handleAddItem(tableId, selectedItems.name, selectedItems.price, 1)
+              }
+            >
+              Add
+            </button>
+          </div>
+          ))}
+        </div> */}
 
         <div className="right">
           <div className="manage-item">
@@ -333,9 +312,14 @@ function AddOrderPage() {
               <tr>
                 <td colSpan="4">Total</td>
                 <td>{`Rs ${total(tableId)}`}</td>
-                <td></td>
+                {/* <td></td> */}
                 <td>
-                  <button onClick={handleGenerateBill}>Generate Bill</button>
+                  <button
+                    className="generate-bill-button"
+                    onClick={handleGenerateBill}
+                  >
+                    Generate Bill
+                  </button>
                 </td>
               </tr>
             </tfoot>

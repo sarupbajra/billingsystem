@@ -1,27 +1,85 @@
 // BillingPage.js
 
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "../pages/card.css";
+import ComponentToPrint from "../component/PrintBill";
+import { useReactToPrint } from "react-to-print";
 const BillingPage = () => {
+  const [item, setItem] = useState([]);
+  const [orderTables, setOrderTables] = useState({});
   const { tableId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch the orderTables data or initialize it from localStorage
+    const storedOrderTables =
+      JSON.parse(localStorage.getItem("orderTables")) || {};
+    setOrderTables(storedOrderTables);
+  }, []);
+
   const billData =
     JSON.parse(localStorage.getItem(`billData_${tableId}`)) || [];
-
-  // useEffect(() => {
-  //   // Load the order data for the current table from local storage when the component mounts
-  //   const storedBillData =
-  //     JSON.parse(localStorage.getItem(`billData_${tableId}`)) || [];
-  //   setBillData(storedBillData);
-  // }, [tableId]);
+  const componentRef = useRef();
+  const handleReactToPrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   // Calculate the total cost for the bill
-  const total = billData.reduce((acc, item) => acc + item.cost, 0);
+  const total =
+    orderTables[tableId]?.items.reduce((acc, item) => acc + item.cost, 0) || 0;
+
+  const handlePayment = () => {
+    // Clear the order list for the current table in local storage
+    localStorage.removeItem(`billData_${tableId}`);
+
+    // Create a billing record
+    const billingRecord = {
+      date: new Date().toISOString(),
+      tableId,
+      totalAmount: total,
+      orderedItems: orderTables[tableId]?.items || [],
+    };
+
+    // Store the billing record in local storage
+    const billingRecords =
+      JSON.parse(localStorage.getItem("billingRecords")) || [];
+    billingRecords.push(billingRecord);
+    localStorage.setItem("billingRecords", JSON.stringify(billingRecords));
+
+    // Redirect to the dashboard or another appropriate page
+    navigate("/dashboard");
+  };
+
+  const handlePrint = () => {
+    handleReactToPrint();
+  };
 
   return (
-    <div>
+    <div className="bill-table">
+      <div className="">
+        {total !== 0 ? (
+          <div>
+            <button className="pay-the-bill" onClick={handlePrint}>
+              Print
+            </button>
+            <button className="pay-the-bill" onClick={handlePayment}>
+              Pay Bill
+            </button>
+          </div>
+        ) : (
+          "Please add a product"
+        )}
+      </div>
       <h2>Bill for Table {tableId}</h2>
-      <table>
+      <div style={{ display: "none" }}>
+        <ComponentToPrint
+          total={total}
+          billData={billData}
+          ref={componentRef}
+        />
+      </div>
+      <table className="item-table bg-dark">
         <thead>
           <tr>
             <th>S.N</th>
@@ -49,6 +107,11 @@ const BillingPage = () => {
           </tr>
         </tfoot>
       </table>
+      <div>
+        <h1>Billing Page for Table {tableId}</h1>
+        {/* Display billing details and total amount here */}
+        {/* <button onClick={handlePayment}>Pay Bill</button> */}
+      </div>
     </div>
   );
 };

@@ -1,27 +1,27 @@
-.auth-form-container {
+/* .auth-form-container {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
+    width: 100%;  */
     /* margin: 300px;
     margin-top: 100px; */
-    justify-content: space-between;
+     /* justify-content: space-between;
     background-image: linear-gradient(79deg, #9c7bcc, #fcedfc 48%,#ebf6ff); 
    
-}
-.login-form{
+} */
+/* .login-form{
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
-    justify-content: space-between;
+    justify-content: space-between; */
     /* margin-left: 100px;
     margin-right: 100px; */
-    margin-top: 100px;
+    /* margin-top: 100px;
     align-items: center;
 
-}
-label{
+} */
+/* label{
     text-align: left;
     padding: 0.25rem 0;
     align-items: center;
@@ -43,4 +43,75 @@ button{
     border-radius: 10px;
     cursor: pointer;
     align-items: center;
+} */
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap");
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.form__container {
+  min-height: 100vh;
+  background:linear-gradient(79deg, #9c7bcc, #fcedfc 48%,#ebf6ff); 
+}
+.form__container form {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  padding: 20px;
+}
+.form__heading {
+  font-family: "Dancing Script", cursive;
+  margin-bottom: 10px;
+}
+.form__button {
+  width: 100%;
+  background-color: black;
+  color: white;
+  padding: 5px;
+}
+.form__button:hover {
+  background-color: rgba(0, 0, 0, 0.795);
+}
+.form__submit-btn {
+  margin-top: 20px;
+  width: 100%;
+  color: white;
+  background-color: black;
+  padding: 10px 0px;
+}
+.form__submit-btn:hover {
+  opacity: 0.9;
+}
+.content {
+  min-height: 73vh !important;
+}
+.link-btn{
+    border: none;
+    background-color: white;
+    color: blue;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    padding: 20px;
+}
+
+.link-btn:hover{
+    color: red;
+}
+.form-btn{
+    border: none;
+    background-color: white;
+    color: blue;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    padding: 20px;
+    
+}
+.form-btn:hover{
+    color: red;
 }
