@@ -1,23 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Navbar from "./component/Navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import DashboardPage from "./pages/Dashboard";
 import AddOrderPage from "./pages/AddOrder";
 import FoodItem from "./component/FoodItem";
-import { useState } from "react";
 import { Login } from "./pages/login";
 import Register from "./pages/Register";
 import FoodMenu from "./pages/FoodMenu";
 import FoodItemsPage from "./pages/FoodItemsPage";
-import { Navigate } from "react-router-dom";
-// import Order from './pages/Order';
 import Home from "./pages/home";
 import BillingPage from "./component/BillingPage";
 import { ToastContainer } from "react-toastify";
+// import { useNavigate } from "react-router-dom";
+
 function App() {
   const user = localStorage.getItem("userRole");
-  const userRole = user ? user.role : null; // Get the user's role
+  const [userRole, setUserRole] = useState(null);
+  const handleLogin = (role) => {
+    setUserRole(role);
+  };
   return (
     <>
       <div>
@@ -27,26 +35,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" exact element={<DashboardPage />} />
-            {/* <Route
-              path="/dashboard"
-              element={
-                userRole === "admin" ? (
-                  <DashboardPage />
-                ) : (
-                  <Navigate to="/dashboard" />
-                )
-              }
-            /> */}
-            {/* <Route
-              path="/addorder/:tableId"
-              element={
-                userRole === "staff" ? (
-                  <AddOrderPage />
-                ) : (
-                  <Navigate to="/addorder" />
-                )
-              }
-            /> */}
+
             <Route path="/addorder/:tableId" element={<AddOrderPage />} />
             <Route path="/food-items" element={<FoodItemsPage />} />
             <Route path="/billing/:tableId" element={<BillingPage />} />

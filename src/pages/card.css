@@ -2,12 +2,13 @@
 .cont {
     display: flex;
     justify-content: space-between;
-    margin: 10px;
-    background-color:  #ffff;
+     margin: 10px;
+    background-color:  #ffff; 
     
   }
   
   .left {
+   
     display: flex;
     flex-wrap: wrap;
     background-color :  #fff
@@ -15,7 +16,7 @@
   }
   
   .right {
-    width: 50%;
+    
     margin-left: 20px;
     background-color:  #fff;
   }
@@ -128,6 +129,8 @@
   }
 
   .table-heading {
+    font-size: 24px;
+    font-weight: bold;
     display: flex;
     color: rgb(206, 31, 31);
     font-size: 20px;
@@ -324,20 +327,31 @@
 }
 
 .pending-button {
-  background-color: transparent; 
+  /* background-color: transparent; 
   color: #000; 
   padding: 10px 20px; 
   border: 2px solid #000; 
   border-image-source: linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%); 
   border-radius: 4px; 
   cursor: pointer; 
-  font-size: 16px; 
+  font-size: 16px;  */
+  background-image: url("/src/assets/Icons/button.png");
+  background-color: transparent;
+  color: rgb(248, 248, 8);
+  border: 0;
+  /* height: 10px;
+  width: 0px; */
+  padding: 4px 30px 4px 20px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
 }
 
-.pending-button:hover {
+/* .pending-button:hover {
   background-color: rgba(0, 0, 0, 0.1); 
   color: #333; 
-}
+} */
 
 .generate-bill-button {
   background-color: #4caf50; /* Green background color */

@@ -19,6 +19,8 @@ import FoodItemCard from "../component/FoodItemCard";
 // import UploadAndDisplayImage from "../component/imageUpload";
 
 function AddOrderPage() {
+  console.log("here");
+
   const location = useLocation();
   const selectedItems = location.state?.selectedItems || [];
   const selectedImage = localStorage.getItem("selectedImage");
@@ -51,10 +53,12 @@ function AddOrderPage() {
   );
   console.log("filter", filtered);
   useEffect(() => {
+    console.log("orderrs", orderTables);
     //   // Save order data to local storage whenever it changes
     //   localStorage.setItem("orderTables", JSON.stringify(orderTables));
     //   const getFoodItemFromMenuList =
     //     JSON.parse(localStorage.getItem("foodItems")) || [];
+    localStorage.setItem("orderTables", JSON.stringify(orderTables));
     const menuList = JSON.parse(localStorage.getItem("menuList")) || [];
     const getFoodItemFromMenuList = getLocalItems();
     //  const menuList = localStorage.getItem("foodItems");
@@ -63,6 +67,18 @@ function AddOrderPage() {
   }, [orderTables]);
   //   setOrderTables(getLocalItems());
   // }, []);
+  useEffect(() => {
+    if (tables[tableId].status === "vacant") {
+      resetOrderData(tableId);
+    }
+  }, [tables, tableId]);
+  useEffect(() => {
+    // Load order data from local storage
+    const localOrderData =
+      JSON.parse(localStorage.getItem("orderTables")) || {};
+    setOrderTables(localOrderData);
+  }, []);
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     console.log(file);
@@ -134,10 +150,11 @@ function AddOrderPage() {
   const handleGenerateBill = () => {
     console.log("Generating bill for table:", tableId);
     // Store the order data for the current table in local storage
-    localStorage.setItem(
+    const getTableDetail = localStorage.setItem(
       `billData_${tableId}`,
       JSON.stringify(orderTables[tableId]?.items)
     );
+    console.log("getTable::>", getTableDetail, orderTables[tableId]?.items);
     // Navigate to the billing page for the current table
     navigate(`/billing/${tableId}`);
   };
@@ -151,6 +168,7 @@ function AddOrderPage() {
             : item
         ),
       };
+      localStorage.setItem("orderTables", JSON.stringify(updatedTable));
       updatedTable.items = updatedTable.items.filter(
         (item) => item.quantity > 0
       );
@@ -159,7 +177,9 @@ function AddOrderPage() {
         [tableId]: updatedTable,
       };
     });
+
     dispatch(updateQuantity({ tableId, index, quantity }));
+    // localStorage.setItem("orderTables", JSON.stringify(orderTables));
   };
 
   // const calculateItemCost = (price, quantity) => price * quantity;
@@ -169,6 +189,14 @@ function AddOrderPage() {
   console.log("total", orderData);
   const handleImageClick = () => {
     inputRef.current.click();
+  };
+  const resetOrderData = (tableId) => {
+    setOrderTables((prevTables) => {
+      const updatedTables = { ...prevTables };
+      delete updatedTables[tableId]; // Remove the order data for the specific table
+      localStorage.setItem("orderTables", JSON.stringify(updatedTables)); // Update local storage
+      return updatedTables;
+    });
   };
 
   return (

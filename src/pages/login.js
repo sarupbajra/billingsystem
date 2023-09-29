@@ -19,6 +19,8 @@ export const Login = (props) => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [role, setRole] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
   // const userName = localStorage.getItem("email")
   //   ? localStorage.getItem("email")
   //   : "admin@admin.com";
@@ -43,7 +45,15 @@ export const Login = (props) => {
       setUserRoleInLocalStorage("staff");
     }
   }, [email, password, navigate]);
-
+  const handleLogin = () => {
+    if (role === "admin" || role === "staff") {
+      // Set the user as logged in and send the role to the parent component
+      setLoggedIn(true);
+      props.on(role);
+    } else {
+      alert("Invalid role. Please enter 'admin' or 'staff'.");
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent form submission
 
@@ -99,9 +109,31 @@ export const Login = (props) => {
           {errors.credentials && (
             <p className="error-message">{errors.credentials}</p>
           )}
-          <button type="submit" className="form__button" onClick={handleSubmit}>
-            Log In
-          </button>
+          <div>
+            {!loggedIn ? (
+              <div>
+                <h2>Login</h2>
+                <input
+                  type="text"
+                  placeholder="Enter role (admin or staff)"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="form__button"
+                  onClick={handleLogin}
+                >
+                  Log In
+                </button>
+              </div>
+            ) : (
+              <div>
+                <p>Logged in as: {role}</p>
+              </div>
+            )}
+          </div>
+
           <button
             className="link-btn"
             onClick={(e) => props.onFormSwitch("register")}

@@ -14,15 +14,18 @@ import { useNavigate } from "react-router-dom";
 import VaccantIcon from "../assets/Icons/vaccant2.png";
 import OccupiedIcon from "../assets/Icons/occupy.png";
 import "./Home.css";
+import { useParams } from "react-router-dom";
 import Navbar from "../component/Navbar";
 // import AddOrderPage from './AddOrder';
 
 function DashboardPage() {
+  const { tableId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const tableDetailStore = useSelector(
     (state) => state.tableDetail.tableDetailInfo
   );
+
   // const tableNumbers= [1,2,3,4];
 
   const [viewModalShow, setViewModalShow] = useState(false); // Modal for viewing table info
@@ -37,6 +40,12 @@ function DashboardPage() {
   const [paxNumber, setPaxNumber] = useState();
   const [selectedTable, setSelectedTable] = useState();
   const [tableDetailList, setTableDetailList] = useState([]);
+  const [isPayBillEnabled, setIsPayBillEnabled] = useState(false);
+  const [showTableAvailableButton, setShowTableAvailableButton] =
+    useState(true);
+  const [showPayBillButton, setShowPayBillButton] = useState(false);
+  const [orderTables, setOrderTables] = useState({});
+
   // const tableList =useSelector ((state) => state.table);
   // const dispatch = useDispatch();
 
@@ -74,10 +83,13 @@ function DashboardPage() {
     setModalShow(true);
     setPendingModalShow(true);
     setIsBillPending(true);
-    setSelectedTableByUser(tableNo);
+    setSelectedTable(tableNo);
+    setIsPayBillEnabled(
+      tableDetailStore.some((table) => table.billStatus === "pending")
+    );
   };
 
-  const handlePayBill = (tableNo) => {
+  const handlePayBill = () => {
     if (selectedTable) {
       const updatedTableList = tableDetailStore.map((table) =>
         table.tableNo === selectedTable
@@ -89,6 +101,12 @@ function DashboardPage() {
             }
           : table
       );
+      setOrderTables((prevTables) => {
+        const updatedTables = { ...prevTables };
+        delete updatedTables[tableId];
+        localStorage.setItem("orderTables", JSON.stringify(updatedTables));
+        return updatedTables;
+      });
 
       dispatch(tableDetailSlice.actions.updateTableDetail(updatedTableList));
       setPendingModalShow(false);
@@ -238,7 +256,11 @@ function DashboardPage() {
             )}
           </Modal.Body>
           <Modal.Footer>
-            {isBillPending && <Button onClick={handlePayBill}>Pay Bill</Button>}
+            {isBillPending && (
+              <Button onClick={handlePayBill} disabled={!isPayBillEnabled}>
+                Pay Bill
+              </Button>
+            )}
             <Button onClick={() => setModalShow(false)}>Close</Button>
           </Modal.Footer>
         </Modal>

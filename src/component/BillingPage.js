@@ -29,10 +29,37 @@ const BillingPage = () => {
   const total =
     orderTables[tableId]?.items.reduce((acc, item) => acc + item.cost, 0) || 0;
 
-  const handlePayment = () => {
+  let totalBill = 0; // Initialize the total bill outside the loop
+
+  orderTables[tableId]?.items.forEach((el) => {
+    console.log(el);
+    const billedItem = el.price * el.quantity;
+    totalBill += billedItem; // Accumulate the billedItem values
+  });
+
+  console.log("bill", totalBill);
+
+  console.log("..", orderTables[tableId]);
+  console.log("..", total);
+
+  const handlePayment = (tableNo) => {
     // Clear the order list for the current table in local storage
+    localStorage.removeItem(`orderTables_${tableId}`);
     localStorage.removeItem(`billData_${tableId}`);
 
+    const updatedTableDetail =
+      JSON.parse(localStorage.getItem("tableDetailInfo")) || [];
+    const updatedTableIndex = updatedTableDetail.findIndex(
+      (table) => table.tableNo === tableNo
+    );
+
+    if (updatedTableIndex !== -1) {
+      updatedTableDetail[updatedTableIndex].status = "vacant";
+      localStorage.setItem(
+        "tableDetailInfo",
+        JSON.stringify(updatedTableDetail)
+      );
+    }
     // Create a billing record
     const billingRecord = {
       date: new Date().toISOString(),
@@ -103,7 +130,7 @@ const BillingPage = () => {
         <tfoot>
           <tr>
             <td colSpan="4">Total</td>
-            <td>{`Rs ${total}`}</td>
+            <td>{`Rs ${totalBill}`}</td>
           </tr>
         </tfoot>
       </table>
